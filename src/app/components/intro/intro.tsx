@@ -14,7 +14,7 @@ export default function Intro() {
         width: window.innerWidth,
         height: window.innerHeight,
       });
-      console.log("Window resized:", window.innerWidth, window.innerHeight);
+      console.log("Window resized:", window.innerWidth, window.innerHeight); 
     };
 
     // Throttle scroll handling for smooth transitions
