@@ -2,7 +2,6 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Pixelify } from "react-pixelify";
-import { Link, Element, Events, animateScroll as scroll } from "react-scroll";
 import throttle from 'lodash/throttle';
 
 export default function Intro() {
