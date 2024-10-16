@@ -2,15 +2,15 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState, useCallback } from "react";
 import throttle from 'lodash/throttle';
-import Script from 'next/script';
+
 import { ImagePixelated } from "react-pixelate"
-import { debounce } from "lodash";
+
 
 export default function Intro() {
   const [windowDimensions, setWindowDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [pixelSize, setPixelSize] = useState(100); // Initial pixel size
 
-  const [isVisible, setIsVisible] = useState(true);
+
 
   
   // Update window dimensions
