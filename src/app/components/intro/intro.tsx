@@ -6,23 +6,25 @@ import Image from 'next/image';
 import { ImagePixelated } from "react-pixelate";
 
 export default function Intro() {
-  const [windowDimensions, setWindowDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 }); // Initialize with 0s
   const [pixelSize, setPixelSize] = useState(100); // Initial pixel size
   const [fadeOut, setFadeOut] = useState(false); // State to control fade out of the pixelated image
   const [imageLoaded, setImageLoaded] = useState(false); // To track when the static image has fully loaded
 
   // Update window dimensions
   const updateDimensions = useCallback(() => {
-    setWindowDimensions({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
+    if (typeof window !== "undefined") {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
   }, []);
 
   // Handle scroll to adjust pixel size
   const handleScroll = useCallback(
     throttle(() => {
-      if (!fadeOut) {
+      if (!fadeOut && typeof window !== "undefined") { // Check if window is defined
         const scrollY = window.scrollY;
         const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
         const newPixelSize = Math.max(5, 100 * (1 - (scrollY / maxScroll)));
@@ -41,18 +43,22 @@ export default function Intro() {
     updateDimensions(); // Set initial dimensions
 
     // Add event listeners for resize and scroll
-    window.addEventListener("resize", updateDimensions);
-    window.addEventListener("scroll", handleScroll);
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", updateDimensions);
+      window.addEventListener("scroll", handleScroll);
+    }
 
     // Cleanup event listeners on component unmount
     return () => {
-      window.removeEventListener("resize", updateDimensions);
-      window.removeEventListener("scroll", handleScroll);
+      if (typeof window !== "undefined") {
+        window.removeEventListener("resize", updateDimensions);
+        window.removeEventListener("scroll", handleScroll);
+      }
     };
   }, [updateDimensions, handleScroll]); // Depend on memoized functions
 
   return (
-    <Box position="relative" width={windowDimensions.width} height={fadeOut ? ('100vh') : ('150vh')}>
+    <Box position="relative" width={windowDimensions.width} height={fadeOut ? '100vh' : '150vh'}>
       {/* Pixelated image */}
       <Box
         position="fixed"
