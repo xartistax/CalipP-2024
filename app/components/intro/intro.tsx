@@ -61,24 +61,21 @@ const SocialButton = ({
 	return (
 		<Flex w={'100vw'} h={'100vh'} position={'relative'} overflow={'hidden'}>
 			{/* Background Video */}
+			
+
 			<video
-				ref={videoRef} // Assigning ref to the video element
-				autoPlay
-				loop
-				muted={isMuted} // Set mute based on the state
-				style={{
-					position: 'absolute',
-					top: 0,
-					left: 0,
-					width: '100%',
-					height: '100%',
-					objectFit: 'cover',
-					zIndex: -1 // Ensure the video stays behind the content
-				}}
-			>
-				<source src="video/jah_blessing_croped_small.mp4" type="video/mp4" />
-				Your browser does not support the video tag.
-			</video>
+   ref={videoRef}
+   autoPlay
+   loop
+   muted
+   playsInline
+   style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -1 }}
+>
+   <source src="video/jah_blessing_croped_small.mp4" type="video/mp4" />
+   <source src="video/jah_blessing_croped_mobile.mp4" type="video/mp4" media="(max-width: 768px)" />
+   Your browser does not support the video tag.
+</video>
+
 
 			<VStack
 				w={'full'} 
