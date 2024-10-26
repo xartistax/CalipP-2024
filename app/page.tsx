@@ -22,7 +22,7 @@ export default function Home() {
       <main>
         
          <Intro /> 
-         <ImageGalerie />
+         
         
       </main>
      
