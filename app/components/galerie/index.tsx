@@ -13,7 +13,9 @@ const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
 });
 
 import "yet-another-react-lightbox/styles.css";
-import NextJsImage from "./NextJsImage"; 
+import NextJsImage from "./nextjsimage";  // Match exactly with the renamed file
+
+
 
 // Define a type for the photo objects
 type PhotoType = {
