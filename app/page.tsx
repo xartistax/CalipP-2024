@@ -1,7 +1,7 @@
 "use client"
 import { Box } from "@chakra-ui/react";
 import Intro from "./components/intro/intro";
-import ImageGalerie from "./components/galerie";
+
 
 
 
