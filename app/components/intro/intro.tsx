@@ -44,7 +44,7 @@ export default function WithBackgroundVideo() {
 					zIndex: -1 // Ensure the video stays behind the content
 				}}
 			>
-				<source src="video/jah_blessing_croped.mp4" type="video/mp4" />
+				<source src="video/jah_blessing_croped_small.mp4" type="video/mp4" />
 				Your browser does not support the video tag.
 			</video>
 
