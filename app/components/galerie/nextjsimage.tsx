@@ -1,4 +1,4 @@
-// components/NextJsImage.tsx
+
 import Image from "next/image";
 import {
   isImageFitCover,
