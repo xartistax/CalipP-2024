@@ -1,4 +1,3 @@
-// app/ImageGalerie.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { ColumnsPhotoAlbum } from "react-photo-album";
@@ -6,8 +5,6 @@ import "react-photo-album/columns.css";
 
 import dynamic from "next/dynamic";
 import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
-import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
 // Dynamically import the Lightbox component
@@ -18,16 +15,24 @@ const Lightbox = dynamic(() => import("yet-another-react-lightbox"), {
 import "yet-another-react-lightbox/styles.css";
 import NextJsImage from "./NextJsImage";
 
-
+// Define a type for the photo objects
+type PhotoType = {
+  src: string;
+  alt: string;
+  width: number; // Width property
+  height: number; // Height property
+};
 
 export default function ImageGalerie() {
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState<PhotoType[]>([]); // Specify the type for photos
   const [index, setIndex] = useState(-1);
 
   useEffect(() => {
     const fetchPhotos = async () => {
       const response = await fetch('/api/photos');
       const data = await response.json();
+      
+      // Assuming your API returns an array of photos matching PhotoType
       setPhotos(data);
     };
 

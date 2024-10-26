@@ -49,7 +49,7 @@ export default function WithBackgroundVideo() {
 			</video>
 
 			<VStack
-				w={'full'}
+				w={'full'} 
 				justify={'center'}
 				px={useBreakpointValue({ base: 4, md: 8 })}
 				bgGradient={'linear(to-r, blackAlpha.600, transparent)'}
