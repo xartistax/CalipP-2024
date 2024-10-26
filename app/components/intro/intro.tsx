@@ -1,8 +1,7 @@
 'use client';
 
-import { Stack, Flex, Text, VStack, HStack, useBreakpointValue, IconButton } from '@chakra-ui/react';
-import { useEffect, useState, useRef } from 'react';
-import { SocialButton } from '../footer';
+import { Stack, Flex, Text, VStack, HStack, useBreakpointValue, IconButton, useColorModeValue, chakra, VisuallyHidden } from '@chakra-ui/react';
+import { useEffect, useState, useRef, ReactNode } from 'react';
 import { FaSpotify, FaYoutube, FaTiktok, FaEnvelope, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 
 export default function WithBackgroundVideo() {
@@ -17,6 +16,39 @@ export default function WithBackgroundVideo() {
 		}, 500); // Adding a slight delay for a smooth transition effect
 		return () => clearTimeout(timer);
 	}, []);
+
+
+
+const SocialButton = ({
+		children,
+		label,
+		href,
+	  }: {
+		children: ReactNode
+		label: string
+		href: string
+	  }) => {
+		return (
+		  <chakra.button
+			bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
+			rounded={'full'}
+			w={8}
+			h={8}
+			cursor={'pointer'}
+			as={'a'}
+			href={href}
+			display={'inline-flex'}
+			alignItems={'center'}
+			justifyContent={'center'}
+			transition={'background 0.3s ease'}
+			_hover={{
+			  bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+			}}>
+			<VisuallyHidden>{label}</VisuallyHidden>
+			{children}
+		  </chakra.button>
+		)
+	  }
 
 	// Toggle mute function
 	const toggleMute = () => {
