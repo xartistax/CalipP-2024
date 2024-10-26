@@ -8,7 +8,7 @@ import { FaSpotify, FaYoutube, FaTiktok, FaEnvelope, FaVolumeMute, FaVolumeUp } 
 export default function WithBackgroundVideo() {
 	const [isReady, setIsReady] = useState(false);
 	const [isMuted, setIsMuted] = useState(true); // State to manage mute status
-	const videoRef = useRef(null); // Reference to the video element
+	const videoRef = useRef<HTMLVideoElement | null>(null); // Specify the ref type for a video element
 
 	// Handle component ready state
 	useEffect(() => {

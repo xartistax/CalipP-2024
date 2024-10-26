@@ -30,10 +30,11 @@ export default function ImageGalerie() {
   useEffect(() => {
     const fetchPhotos = async () => {
       const response = await fetch('/api/photos');
-      const data = await response.json();
+      const data: PhotoType[] = await response.json();
       
-      // Assuming your API returns an array of photos matching PhotoType
-      setPhotos(data);
+      // Ensure width and height are valid numbers
+      const validPhotos = data.filter(photo => photo.width && photo.height);
+      setPhotos(validPhotos);
     };
 
     fetchPhotos();
