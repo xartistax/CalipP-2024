@@ -9,7 +9,7 @@ export default function RootLayout({
   children: React.ReactNode,
 }) {
   return (
-    <html lang='en' className={fonts.poppins.variable}>
+    <html lang='de' className={fonts.poppins.variable}>
       <body>
         <Providers>{children}</Providers>
       </body>
