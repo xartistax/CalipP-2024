@@ -85,18 +85,7 @@ const SocialButton = ({
 			>
 				<Stack maxW={'2xl'} align={'flex-start'} spacing={3}>
 					{/* The smaller intro text with a smooth fade-in transition */}
-					<Text
-						color={'white'}
-						fontWeight={200}
-						lineHeight={1.2}
-						fontSize={useBreakpointValue({ base: 'md', md: 'md' })} // Smaller size for intro text
-						opacity={isReady ? 1 : 0}
-						transform={isReady ? 'translateY(0)' : 'translateY(20px)'}
-						transition="opacity 1.5s ease, transform 1.5s ease"
-					>
-						Where Reggae Meets the World:
-					</Text>
-
+					
 					{/* Main bold text with a smooth fade-in transition */}
 					<Text
 						color={'white'}
