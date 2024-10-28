@@ -154,7 +154,7 @@ export default function WithBackgroundVideo() {
                         transform={isReady ? 'translateY(0)' : 'translateY(20px)'}
                         transition="opacity 1.5s ease, transform 1.5s ease"
                     >
-                        <SocialButton label="Mail" href="mailto:info@calipmusig.com">
+                        <SocialButton label="Mail" href="mailto:info@calipmusic.com">
                             <FaEnvelope color="white" />
                         </SocialButton>
                         <SocialButton label="Spotify" href="https://open.spotify.com/intl-de/artist/3ecsQBXTAjmQyO3Nqq0KZV">
