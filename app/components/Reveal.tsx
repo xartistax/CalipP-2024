@@ -1,10 +1,8 @@
 "use client";
 
 import { Box, BoxProps } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ReactNode } from "react";
-
-const MotionBox = motion(Box);
 
 type RevealProps = BoxProps & {
   children: ReactNode;
@@ -12,13 +10,19 @@ type RevealProps = BoxProps & {
   distance?: number;
 };
 
-export function Reveal({ children, delay = 0, distance = 32, ...props }: RevealProps) {
+export function Reveal({ children, delay = 0, distance = 32, ...boxProps }: RevealProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <MotionBox
-      initial={{
-        opacity: 0,
-        y: distance,
-      }}
+    <motion.div
+      initial={
+        prefersReducedMotion
+          ? false
+          : {
+              opacity: 0,
+              y: distance,
+            }
+      }
       whileInView={{
         opacity: 1,
         y: 0,
@@ -28,13 +32,16 @@ export function Reveal({ children, delay = 0, distance = 32, ...props }: RevealP
         amount: 0.15,
       }}
       transition={{
-        duration: 0.7,
-        delay,
+        duration: prefersReducedMotion ? 0 : 0.7,
+        delay: prefersReducedMotion ? 0 : delay,
         ease: [0.22, 1, 0.36, 1],
       }}
-      {...props}
+      style={{
+        width: "100%",
+        height: "100%",
+      }}
     >
-      {children}
-    </MotionBox>
+      <Box {...boxProps}>{children}</Box>
+    </motion.div>
   );
 }
