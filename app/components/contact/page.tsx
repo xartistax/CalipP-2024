@@ -28,7 +28,7 @@ export default function Contact() {
               Get in touch
             </Text>
 
-            <Heading fontSize={{ base: "3xl", md: "5xl" }} fontWeight={500} letterSpacing="-0.03em">
+            <Heading as={"h2"} fontSize={{ base: "3xl", md: "5xl" }} fontWeight={500} letterSpacing="-0.03em">
               Management & Booking
             </Heading>
 
@@ -120,7 +120,7 @@ function ContactCard({ title, company, children }: { title: string; company: str
           {title}
         </Text>
 
-        <Heading size="md" fontWeight={500}>
+        <Heading as={"h2"} size="md" fontWeight={500}>
           {company}
         </Heading>
       </Stack>

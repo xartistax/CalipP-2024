@@ -204,7 +204,7 @@ export function Footer() {
                     Latest release
                   </Text>
 
-                  <Heading fontSize={{ base: "xl", md: "2xl" }} fontWeight={600}>
+                  <Heading as={"h2"} fontSize={{ base: "xl", md: "2xl" }} fontWeight={600}>
                     {latestRelease.name}
                   </Heading>
 

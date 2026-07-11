@@ -95,7 +95,7 @@ function ContactCard({ label, company, children }: { label: string; company: str
           {label}
         </Text>
 
-        <Heading fontSize={{ base: "2xl", md: "3xl" }} fontWeight={500} letterSpacing="-0.03em">
+        <Heading as={"h2"} fontSize={{ base: "2xl", md: "3xl" }} fontWeight={500} letterSpacing="-0.03em">
           {company}
         </Heading>
       </Stack>

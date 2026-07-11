@@ -561,7 +561,7 @@ function SpotifyInteractivePlayer({
               <Text>Spotify player</Text>
             </HStack>
 
-            <Heading noOfLines={2} fontSize={{ base: "2xl", md: "3xl" }} fontWeight={500} letterSpacing="-0.03em">
+            <Heading as={"h2"} noOfLines={2} fontSize={{ base: "2xl", md: "3xl" }} fontWeight={500} letterSpacing="-0.03em">
               {selectedRelease?.name ?? "Cali P"}
             </Heading>
 
@@ -664,7 +664,9 @@ function SpotifyErrorFallback() {
     >
       <FaSpotify size={44} />
 
-      <Heading size="lg">Spotify releases could not be loaded</Heading>
+      <Heading as={"h2"} size="lg">
+        Spotify releases could not be loaded
+      </Heading>
 
       <Text color="whiteAlpha.600">You can still listen to Cali P directly on Spotify.</Text>
 

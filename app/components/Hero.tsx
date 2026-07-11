@@ -130,6 +130,7 @@ export function Hero({
           </Box>
 
           <Heading
+            as="h1"
             maxW="700px"
             fontSize={{
               base: "2.4rem",
