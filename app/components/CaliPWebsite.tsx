@@ -54,8 +54,8 @@ export default function CaliPWebsite() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const videoSrc = useBreakpointValue({
-    base: "/video/jah_blessing_mobile.mp4",
-    md: "/video/jah_blessing_croped_small.mp4",
+    base: "/video/hero-video.mp4",
+    md: "/video/hero-video.mp4",
   });
 
   const posterSrc = useBreakpointValue({
@@ -238,39 +238,49 @@ function Hero({
           playsInline
           poster={posterSrc}
           key={`${videoSrc}-${posterSrc}`}
+          onLoadedMetadata={(event) => {
+            event.currentTarget.currentTime = 2.5;
+          }}
           style={{
             width: "100%",
+
             height: "100%",
+
             objectFit: "cover",
+
             opacity: isReady ? 1 : 0,
+
             transition: "opacity 1s ease",
+
+            transform: "scale(1.05)",
+
+            animation: "heroZoom 18s ease-in-out infinite alternate",
+
+            willChange: "transform",
           }}
         >
           <source src={videoSrc} type="video/mp4" />
         </video>
       </Box>
 
+      {/* Grundabdunklung */}
+      <Box position="absolute" inset={0} bg="rgba(0, 0, 0, 0.32)" />
+
+      {/* Dunkler Bereich hinter dem Hero-Text */}
       <Box
         position="absolute"
         inset={0}
         bgGradient={{
-          base: "linear(to-b, blackAlpha.400 0%, blackAlpha.300 35%, #080a08 100%)",
-          md: "linear(to-r, rgba(8,10,8,0.94) 0%, rgba(8,10,8,0.45) 48%, rgba(8,10,8,0.12) 75%)",
+          base: "linear(to-b, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.45) 55%, #080a08 100%)",
+          md: "linear(to-r, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.72) 38%, rgba(0,0,0,0.28) 70%, rgba(0,0,0,0.08) 100%)",
         }}
       />
 
-      <Box position="absolute" inset={0} bgGradient="linear(to-t, #080a08 0%, transparent 30%)" />
+      {/* Übergang zum nächsten Abschnitt */}
+      <Box position="absolute" inset={0} bgGradient="linear(to-t, #080a08 0%, rgba(8,10,8,0.45) 18%, transparent 42%)" />
 
-      <Box
-        position="absolute"
-        top="20%"
-        right="-15%"
-        w={{ base: "300px", md: "700px" }}
-        h={{ base: "300px", md: "700px" }}
-        borderRadius="full"
-        bg="rgba(217, 255, 67, 0.08)"
-        filter="blur(100px)"
-      />
+      {/* Vignette */}
+      <Box position="absolute" inset={0} bg="radial-gradient(circle at center, transparent 38%, rgba(0,0,0,0.5) 100%)" />
 
       <Container position="relative" zIndex={2} maxW="7xl" pt={{ base: 28, md: 32 }} pb={{ base: 24, md: 20 }}>
         <Stack
