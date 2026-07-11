@@ -39,6 +39,7 @@ export function Hero({
           ref={videoRef}
           autoPlay
           loop
+          muted
           playsInline
           poster={posterSrc}
           key={`${videoSrc}-${posterSrc}`}
