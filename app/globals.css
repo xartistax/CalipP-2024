@@ -35,3 +35,57 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #d9ff43;
 }
+
+@keyframes heroZoom {
+  0% {
+    transform: scale(1.05) translate(0%, 0%);
+  }
+
+  50% {
+    transform: scale(1.09) translate(-1%, -0.5%);
+  }
+
+  100% {
+    transform: scale(1.12) translate(-2%, -1%);
+  }
+}
+
+@keyframes vinylSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vinyl-spin {
+    animation: none !important;
+  }
+}
+
+@keyframes footerMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.footer-marquee {
+  animation: footerMarquee 24s linear infinite;
+}
+
+.footer-marquee:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-marquee {
+    animation: none;
+  }
+}

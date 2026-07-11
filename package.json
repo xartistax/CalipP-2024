@@ -33,6 +33,7 @@
     "react-pixelify": "^0.2.2",
     "react-scroll": "^1.9.0",
     "sass": "^1.80.1",
+    "sharp": "^0.35.3",
     "yet-another-react-lightbox": "^3.21.6"
   },
   "devDependencies": {

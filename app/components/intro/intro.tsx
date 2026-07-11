@@ -7,6 +7,36 @@ import Image from "next/image";
 
 const SHOP_URL = "https://senmbelek-store.myshopify.com/";
 
+export const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => (
+  <chakra.a
+    href={href}
+    target={href.startsWith("http") ? "_blank" : undefined}
+    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+    aria-label={label}
+    display="inline-flex"
+    alignItems="center"
+    justifyContent="center"
+    w="42px"
+    h="42px"
+    borderRadius="full"
+    border="1px solid"
+    borderColor="whiteAlpha.300"
+    bg="blackAlpha.400"
+    color="white"
+    backdropFilter="blur(10px)"
+    transition="all 0.25s ease"
+    _hover={{
+      bg: "white",
+      color: "black",
+      transform: "translateY(-3px)",
+      borderColor: "white",
+    }}
+  >
+    <VisuallyHidden>{label}</VisuallyHidden>
+    {children}
+  </chakra.a>
+);
+
 export default function Intro() {
   const [isReady, setIsReady] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
@@ -40,36 +70,6 @@ export default function Intro() {
     videoRef.current.muted = !videoRef.current.muted;
     setIsMuted(videoRef.current.muted);
   };
-
-  const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => (
-    <chakra.a
-      href={href}
-      target={href.startsWith("http") ? "_blank" : undefined}
-      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-      aria-label={label}
-      display="inline-flex"
-      alignItems="center"
-      justifyContent="center"
-      w="42px"
-      h="42px"
-      borderRadius="full"
-      border="1px solid"
-      borderColor="whiteAlpha.300"
-      bg="blackAlpha.400"
-      color="white"
-      backdropFilter="blur(10px)"
-      transition="all 0.25s ease"
-      _hover={{
-        bg: "white",
-        color: "black",
-        transform: "translateY(-3px)",
-        borderColor: "white",
-      }}
-    >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {children}
-    </chakra.a>
-  );
 
   return (
     <Flex position="relative" w="full" minH="100svh" overflow="hidden" bg="black">
