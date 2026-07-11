@@ -21,6 +21,14 @@ const navigationItems = [
     label: "Music",
   },
   {
+    id: "tour",
+    label: "Tour",
+  },
+  {
+    id: "videos",
+    label: "Videos",
+  },
+  {
     id: "shop",
     label: "Shop",
   },
@@ -133,7 +141,7 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           position="absolute"
           left="50%"
           transform="translateX(-50%)"
-          spacing={2}
+          spacing={1}
           p={1}
           borderRadius="full"
           bg={isScrolled ? "whiteAlpha.50" : "transparent"}
@@ -249,7 +257,7 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           pointerEvents="none"
         />
 
-        <Stack position="relative" spacing={2} w="full">
+        <Stack position="relative" spacing={1} w="full">
           {navigationItems.map((item, index) => (
             <Button
               key={item.id}
@@ -339,7 +347,7 @@ export function NavLink({ children, isActive = false, onClick }: NavLinkProps) {
       borderRadius="full"
       color={isActive ? "#d9ff43" : "whiteAlpha.800"}
       bg={isActive ? "rgba(217,255,67,0.08)" : "transparent"}
-      px={5}
+      px={{ md: 3, lg: 4 }}
       fontSize="xs"
       fontWeight={700}
       letterSpacing="0.14em"
