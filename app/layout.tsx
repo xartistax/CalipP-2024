@@ -1,49 +1,51 @@
 // app/layout.tsx
-import { fonts } from './fonts'
-import { Providers } from './providers'
+import { Providers } from "./providers";
 import "./globals.css";
+import { Inter } from "next/font/google";
 
+const inter = Inter({
+  subsets: ["latin"],
 
-import type { Metadata } from 'next'
-
+  display: "swap",
+});
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'CaliP Music',
-  description: 'Bridging Cultures, Elevating Consciousness, and Inspiring Change Through Music.',
+  title: "CaliP Music",
+  description: "Bridging Cultures, Elevating Consciousness, and Inspiring Change Through Music.",
 
   openGraph: {
-    title: 'CaliP Music',
-    description: 'Bridging Cultures, Elevating Consciousness, and Inspiring Change Through Music.',
-    url: 'https://www.calipmusic.com',
+    title: "CaliP Music",
+    description: "Bridging Cultures, Elevating Consciousness, and Inspiring Change Through Music.",
+    url: "https://www.calipmusic.com",
     images: [
-        {
-            url: '/img_og.jpg', // Optimized for 1.91:1 aspect ratio (1200x630)
-            width: 1200,
-            height: 630,
-            alt: 'Cali P. Music',
-        },
+      {
+        url: "/img_og.jpg", // Optimized for 1.91:1 aspect ratio (1200x630)
+        width: 1200,
+        height: 630,
+        alt: "Cali P. Music",
+      },
     ],
-},
+  },
 
-twitter: {
-  card: 'summary_large_image',
-  title: 'CaliP Music',
-  description: 'Bridging Cultures, Elevating Consciousness, and Inspiring Change Through Music.',
-  images: ['/img_twitter.jpg'], // Optimized for 2:1 aspect ratio (1200x600)
-},
-
-}
+  twitter: {
+    card: "summary_large_image",
+    title: "CaliP Music",
+    description: "Bridging Cultures, Elevating Consciousness, and Inspiring Change Through Music.",
+    images: ["/img_twitter.jpg"], // Optimized for 2:1 aspect ratio (1200x600)
+  },
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode,
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang='de' className={fonts.poppins.variable}>
-      <body>
+    <html lang="en">
+      <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>
     </html>
-  )
+  );
 }

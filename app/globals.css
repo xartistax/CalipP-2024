@@ -1,5 +1,37 @@
+html {
+  scroll-behavior: smooth;
+  background: #080a08;
+}
+
+body {
+  margin: 0;
+  background: #080a08;
+  color: white;
+}
+
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+}
+
+::selection {
+  background: #d9ff43;
+  color: #080a08;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080a08;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #343a2f;
+  border: 2px solid #080a08;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d9ff43;
 }
