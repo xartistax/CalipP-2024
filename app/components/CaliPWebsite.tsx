@@ -12,6 +12,8 @@ import { BookingSection } from "./Booking";
 import { Footer } from "./Footer";
 import { Navigation } from "./Navigation";
 import { Marquee } from "./Marquee";
+import { TourDates } from "./TourDates";
+import { YoutubeSection } from "./YoutubeSection";
 
 export const SHOP_URL = "https://senmbelek-store.myshopify.com/";
 export const SPOTIFY_URL = "https://open.spotify.com/intl-de/artist/3ecsQBXTAjmQyO3Nqq0KZV";
@@ -20,7 +22,6 @@ export const TIKTOK_URL = "https://www.tiktok.com/@itscalip";
 
 export default function CaliPWebsite() {
   const [isReady, setIsReady] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -61,31 +62,17 @@ export default function CaliPWebsite() {
     });
   };
 
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-
-    videoRef.current.muted = !videoRef.current.muted;
-    setIsMuted(videoRef.current.muted);
-  };
-
   return (
     <Box minH="100vh" overflowX="hidden" bg="#080a08" color="white">
       <Navigation isScrolled={isScrolled} onNavigate={scrollToSection} />
 
-      <Hero
-        videoRef={videoRef}
-        videoSrc={videoSrc}
-        posterSrc={posterSrc}
-        isReady={isReady}
-        isMuted={isMuted}
-        onToggleMute={toggleMute}
-        onNavigate={scrollToSection}
-      />
+      <Hero videoRef={videoRef} videoSrc={videoSrc} posterSrc={posterSrc} isReady={isReady} onNavigate={scrollToSection} />
 
       <StatementSection />
 
       <MusicSection />
-
+      <TourDates />
+      <YoutubeSection />
       <ShopSection />
 
       <BookingSection />

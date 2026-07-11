@@ -38,7 +38,6 @@ export function Reveal({ children, delay = 0, distance = 32, ...boxProps }: Reve
       }}
       style={{
         width: "100%",
-        height: "100%",
       }}
     >
       <Box {...boxProps}>{children}</Box>

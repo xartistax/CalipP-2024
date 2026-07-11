@@ -1,5 +1,5 @@
-import { Flex, Box, Container, Stack, HStack, Heading, Button, Text, IconButton } from "@chakra-ui/react";
-import { FaSpotify, FaShoppingBag, FaYoutube, FaTiktok, FaEnvelope, FaArrowDown, FaVolumeMute, FaVolumeUp } from "react-icons/fa";
+import { Flex, Box, Container, Stack, HStack, Heading, Button, Text } from "@chakra-ui/react";
+import { FaSpotify, FaShoppingBag, FaYoutube, FaTiktok, FaEnvelope, FaArrowDown } from "react-icons/fa";
 
 import { SPOTIFY_URL, SHOP_URL, YOUTUBE_URL, TIKTOK_URL } from "./CaliPWebsite";
 import Image from "next/image";
@@ -10,16 +10,14 @@ export function Hero({
   videoSrc,
   posterSrc,
   isReady,
-  isMuted,
-  onToggleMute,
+
   onNavigate,
 }: {
   videoRef: React.RefObject<HTMLVideoElement>;
   videoSrc?: string;
   posterSrc?: string;
   isReady: boolean;
-  isMuted: boolean;
-  onToggleMute: () => void;
+
   onNavigate: (id: string) => void;
 }) {
   return (
@@ -41,7 +39,6 @@ export function Hero({
           ref={videoRef}
           autoPlay
           loop
-          muted={isMuted}
           playsInline
           poster={posterSrc}
           key={`${videoSrc}-${posterSrc}`}
@@ -261,33 +258,6 @@ export function Hero({
       >
         Explore
       </Button>
-
-      <IconButton
-        aria-label={isMuted ? "Enable video sound" : "Mute video sound"}
-        icon={isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
-        position="absolute"
-        right={{ base: 4, md: 8 }}
-        bottom={{
-          base: "max(16px, env(safe-area-inset-bottom))",
-          md: 8,
-        }}
-        zIndex={3}
-        w={{ base: "44px", md: "48px" }}
-        h={{ base: "44px", md: "48px" }}
-        minW={{ base: "44px", md: "48px" }}
-        borderRadius="full"
-        border="1px solid"
-        borderColor="whiteAlpha.300"
-        bg="blackAlpha.500"
-        color="white"
-        backdropFilter="blur(12px)"
-        onClick={onToggleMute}
-        _hover={{
-          bg: "#d9ff43",
-          color: "#080a08",
-          borderColor: "#d9ff43",
-        }}
-      />
     </Flex>
   );
 }
