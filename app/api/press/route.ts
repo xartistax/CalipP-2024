@@ -157,14 +157,14 @@ function isRelevantArticle(article: PerigonArticle): boolean {
   }
 
   // Exaktes "Cali P", aber nicht "Cali-Poke"
-  const caliPPattern = /(^|[^\p{L}\p{N}])cali(?:\s+|-)p(?![\p{L}\p{N}-])/iu;
+  const caliPPattern = /(^|[^A-Za-z0-9])cali(?:\s+|-)p(?![A-Za-z0-9-])/i;
 
   const titleContainsCaliP = caliPPattern.test(title);
   const descriptionContainsCaliP = caliPPattern.test(description);
 
-  const contentMentions = content.match(/(^|[^\p{L}\p{N}])cali(?:\s+|-)p(?![\p{L}\p{N}-])/giu)?.length ?? 0;
+  const contentMentions = content.match(/(^|[^A-Za-z0-9])cali(?:\s+|-)p(?![A-Za-z0-9-])/gi)?.length ?? 0;
 
-  const musicContext = /\b(reggae|dancehall|music|musician|artist|album|single|song|release|concert|festival|interview|sound system|singer)\b/iu.test(
+  const musicContext = /\b(reggae|dancehall|music|musician|artist|album|single|song|release|concert|festival|interview|sound system|singer)\b/i.test(
     combinedText,
   );
 
