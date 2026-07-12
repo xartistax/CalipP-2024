@@ -16,7 +16,6 @@
     "@emotion/styled": "^11.13.0",
     "@fullpage/react-fullpage": "^0.1.45",
     "@react-spring/web": "^9.7.5",
-    "framer-motion": "^11.11.9",
     "fs": "0.0.1-security",
     "hamburger-react": "^2.5.1",
     "hamburgers": "^1.2.1",
@@ -37,6 +36,7 @@
     "yet-another-react-lightbox": "^3.21.6"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.2.10",
     "@types/lodash": "^4.17.10",
     "@types/node": "^20",
     "@types/react": "^18",

@@ -1,9 +1,11 @@
+"use client";
 import { Flex, Box, Container, Stack, HStack, Heading, Button, Text } from "@chakra-ui/react";
 import { FaSpotify, FaShoppingBag, FaYoutube, FaTiktok, FaEnvelope, FaArrowDown } from "react-icons/fa";
 
 import { SPOTIFY_URL, SHOP_URL, YOUTUBE_URL, TIKTOK_URL } from "./CaliPWebsite";
 import Image from "next/image";
 import { SocialButton } from "./intro/intro";
+import { useState, useEffect } from "react";
 
 export function Hero({
   videoRef,
@@ -20,42 +22,60 @@ export function Hero({
 
   onNavigate: (id: string) => void;
 }) {
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [isVideoReady, setIsVideoReady] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setShouldLoadVideo(true);
+    }, 1200);
+
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <Flex id="home" position="relative" minH={{ base: "100svh", md: "100vh" }} align="center" overflow="hidden" bg="black">
       {/* Video */}
+      {/* Poster und verzögert geladenes Video */}
       <Box
         position="absolute"
         inset={0}
-        sx={{
-          video: {
-            objectPosition: {
-              base: "58% center",
-              md: "center center",
-            },
-          },
+        bgImage={posterSrc ? `url("${posterSrc}")` : undefined}
+        bgSize="cover"
+        bgPosition={{
+          base: "58% center",
+          md: "center center",
         }}
+        bgRepeat="no-repeat"
+        overflow="hidden"
       >
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster={posterSrc}
-          key={`${videoSrc}-${posterSrc}`}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: isReady ? 1 : 0,
-            transition: "opacity 1s ease",
-            transform: "scale(1.05)",
-            animation: "heroZoom 18s ease-in-out infinite alternate",
-            willChange: "transform",
-          }}
-        >
-          <source src={videoSrc} type="video/mp4" />
-        </video>
+        {shouldLoadVideo && videoSrc && (
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster={posterSrc}
+            aria-hidden="true"
+            tabIndex={-1}
+            onCanPlay={() => setIsVideoReady(true)}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "inherit",
+              opacity: isVideoReady ? 1 : 0,
+              transition: "opacity 1s ease",
+              transform: "scale(1.05)",
+              animation: "heroZoom 18s ease-in-out infinite alternate",
+              willChange: "transform",
+            }}
+          >
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+        )}
       </Box>
 
       {/* Grundabdunklung */}
