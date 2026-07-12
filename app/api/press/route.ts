@@ -212,8 +212,10 @@ function deduplicateArticles(articles: PressArticle[]): PressArticle[] {
 
   for (const article of articles) {
     const key = article.title
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
-      .replace(/[^\p{L}\p{N}]+/gu, " ")
+      .replace(/[^a-z0-9]+/gi, " ")
       .trim();
 
     if (!uniqueArticles.has(key)) {
