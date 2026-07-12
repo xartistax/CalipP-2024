@@ -11,16 +11,33 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Cali P Music",
-    description: "Discover the latest releases, albums and singles from reggae artist Cali P.",
-    url: "/music",
     type: "website",
+    url: "/music",
+    title: "Cali P Music",
+    description: "Discover the latest reggae releases, albums and singles from Cali P.",
+    images: [
+      {
+        url: "/img_og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Cali P Music",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Cali P Music",
+    description: "Discover the latest reggae releases, albums and singles from Cali P.",
+    images: ["/img_og.jpg"],
   },
 };
 
 export default function MusicPage() {
   return (
     <SubpageShell>
+      <h1 className="sr-only">Cali P Music – Albums, Singles and Spotify Releases</h1>
+
       <MusicSection />
     </SubpageShell>
   );
