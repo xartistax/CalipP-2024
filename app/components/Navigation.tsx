@@ -1,11 +1,11 @@
 "use client";
 
-import { Box, Button, Flex, HStack, IconButton, Stack, Text } from "@chakra-ui/react";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
-import { FaArrowRight, FaBars, FaShoppingBag, FaTimes } from "react-icons/fa";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { SHOP_URL } from "./CaliPWebsite";
+import styles from "./Navigation.module.css";
 
 type NavigationProps = {
   isScrolled: boolean;
@@ -13,45 +13,25 @@ type NavigationProps = {
 };
 
 const navigationItems = [
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "music",
-    label: "Music",
-  },
-  {
-    id: "tour",
-    label: "Tour",
-  },
-  {
-    id: "videos",
-    label: "Videos",
-  },
-  {
-    id: "shop",
-    label: "Shop",
-  },
-  {
-    id: "booking",
-    label: "Booking",
-  },
+  { id: "home", label: "Home", href: "/" },
+  { id: "music", label: "Music", href: "/music" },
+  { id: "tour", label: "Tour", href: "/tour" },
+  { id: "videos", label: "Videos", href: "/videos" },
+  { id: "shop", label: "Shop", href: "/shop" },
+  { id: "booking", label: "Booking", href: "/booking" },
 ] as const;
 
 export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
   const pathname = usePathname();
-  const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const currentPathSection = pathname === "/" ? "home" : (navigationItems.find((item) => pathname === `/${item.id}`)?.id ?? "home");
-
-  const [activeSection, setActiveSection] = useState<string>(currentPathSection);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     if (pathname !== "/") {
-      setActiveSection(currentPathSection);
+      const currentItem = navigationItems.find((item) => item.href === pathname);
+
+      setActiveSection(currentItem?.id ?? "home");
       return;
     }
 
@@ -61,12 +41,10 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        const visibleEntries = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        const currentEntry = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
 
-        const currentSection = visibleEntries[0];
-
-        if (currentSection) {
-          setActiveSection(currentSection.target.id);
+        if (currentEntry) {
+          setActiveSection(currentEntry.target.id);
         }
       },
       {
@@ -79,10 +57,8 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
       observer.observe(section);
     });
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [currentPathSection, pathname]);
+    return () => observer.disconnect();
+  }, [pathname]);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
@@ -92,302 +68,138 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
     };
   }, [isMenuOpen]);
 
-  const handleNavigation = (id: string) => {
-    setActiveSection(id);
+  useEffect(() => {
     setIsMenuOpen(false);
+  }, [pathname]);
+
+  const handleNavigation = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    setIsMenuOpen(false);
+    setActiveSection(id);
+
+    if (pathname !== "/") {
+      return;
+    }
+
+    event.preventDefault();
 
     if (id === "home") {
-      router.push("/");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
       return;
     }
 
-    if (pathname === "/") {
-      onNavigate?.(id);
-      return;
-    }
-
-    router.push(`/${id}`);
+    onNavigate?.(id);
   };
 
   return (
     <>
-      <Flex
-        as="header"
-        position="fixed"
-        top={0}
-        left={0}
-        right={0}
-        zIndex={200}
-        align="center"
-        justify="space-between"
-        px={{ base: 5, md: 10 }}
-        py={{
-          base: 4,
-          md: isScrolled ? 3 : 5,
-        }}
-        bg={isScrolled || isMenuOpen ? "rgba(8, 10, 8, 0.82)" : "transparent"}
-        borderBottom="1px solid"
-        borderColor={isScrolled || isMenuOpen ? "whiteAlpha.200" : "transparent"}
-        backdropFilter={isScrolled || isMenuOpen ? "blur(22px)" : "none"}
-        transition="all 0.3s ease"
-      >
-        <Box
-          as="button"
-          type="button"
-          position="relative"
-          w={{
-            base: "94px",
-            md: isScrolled ? "105px" : "120px",
-          }}
-          h={{
-            base: "32px",
-            md: isScrolled ? "35px" : "40px",
-          }}
-          cursor="pointer"
-          transition="all 0.3s ease"
-          onClick={() => handleNavigation("home")}
-          aria-label="Go to homepage"
-        >
-          <Image
-            src="/logo.png"
-            alt="Cali P"
-            fill
-            priority
-            sizes="120px"
-            style={{
-              objectFit: "contain",
-              objectPosition: "left center",
-            }}
-          />
-        </Box>
+      <header className={[styles.header, isScrolled || isMenuOpen ? styles.headerScrolled : ""].filter(Boolean).join(" ")}>
+        <Link href="/" className={styles.logo} aria-label="Cali P homepage" onClick={(event) => handleNavigation(event, "home")}>
+          <Image src="/logo.png" alt="Cali P" fill priority sizes="120px" className={styles.logoImage} />
+        </Link>
 
-        <HStack
-          display={{ base: "none", md: "flex" }}
-          position="absolute"
-          left="50%"
-          transform="translateX(-50%)"
-          spacing={1}
-          p={1}
-          borderRadius="full"
-          bg={isScrolled ? "whiteAlpha.50" : "transparent"}
-          border="1px solid"
-          borderColor={isScrolled ? "whiteAlpha.100" : "transparent"}
-          transition="all 0.3s ease"
-        >
+        <nav className={styles.desktopNavigation} aria-label="Main navigation">
           {navigationItems
             .filter((item) => item.id !== "home")
             .map((item) => (
-              <NavLink key={item.id} isActive={activeSection === item.id} onClick={() => handleNavigation(item.id)}>
+              <Link
+                key={item.id}
+                href={item.href}
+                className={[styles.desktopLink, activeSection === item.id ? styles.activeLink : ""].filter(Boolean).join(" ")}
+                aria-current={activeSection === item.id ? "page" : undefined}
+                onClick={(event) => handleNavigation(event, item.id)}
+              >
                 {item.label}
-              </NavLink>
+              </Link>
             ))}
-        </HStack>
+        </nav>
 
-        <Button
-          as="a"
-          href={SHOP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          display={{ base: "none", md: "inline-flex" }}
-          rightIcon={<FaArrowRight />}
-          borderRadius="full"
-          bg="#d9ff43"
-          color="#080a08"
-          px={6}
-          fontSize="xs"
-          fontWeight={800}
-          letterSpacing="0.1em"
-          textTransform="uppercase"
-          transition="all 0.25s ease"
-          _hover={{
-            bg: "#ecff9b",
-            transform: "translateY(-2px)",
-            boxShadow: "0 12px 35px rgba(217,255,67,0.16)",
-          }}
-        >
+        <a href={SHOP_URL} target="_blank" rel="noopener noreferrer" className={styles.storeButton}>
           Store
-        </Button>
+          <ArrowIcon />
+        </a>
 
-        <IconButton
-          display={{ base: "inline-flex", md: "none" }}
+        <button
+          type="button"
+          className={styles.menuButton}
           aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
-          icon={isMenuOpen ? <FaTimes /> : <FaBars />}
-          w="44px"
-          h="44px"
-          minW="44px"
-          borderRadius="full"
-          border="1px solid"
-          borderColor="whiteAlpha.300"
-          bg="blackAlpha.400"
-          color="white"
-          backdropFilter="blur(12px)"
-          transition="all 0.25s ease"
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
           onClick={() => setIsMenuOpen((current) => !current)}
-          _hover={{
-            bg: "#d9ff43",
-            color: "#080a08",
-            borderColor: "#d9ff43",
-          }}
-        />
-      </Flex>
-
-      <Flex
-        display={{ base: "flex", md: "none" }}
-        position="fixed"
-        inset={0}
-        zIndex={150}
-        direction="column"
-        justify="center"
-        px={6}
-        pt="90px"
-        pb={10}
-        bg="rgba(5, 7, 5, 0.97)"
-        backdropFilter="blur(24px)"
-        opacity={isMenuOpen ? 1 : 0}
-        visibility={isMenuOpen ? "visible" : "hidden"}
-        pointerEvents={isMenuOpen ? "auto" : "none"}
-        transform={isMenuOpen ? "translateY(0)" : "translateY(-20px)"}
-        transition="opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease"
-        overflow="hidden"
-      >
-        <Box
-          position="absolute"
-          top="15%"
-          right="-180px"
-          w="460px"
-          h="460px"
-          borderRadius="full"
-          bg="rgba(217,255,67,0.09)"
-          filter="blur(110px)"
-          pointerEvents="none"
-        />
-
-        <Box
-          position="absolute"
-          left="-160px"
-          bottom="-180px"
-          w="420px"
-          h="420px"
-          borderRadius="full"
-          bg="rgba(30,215,96,0.06)"
-          filter="blur(110px)"
-          pointerEvents="none"
-        />
-
-        <Stack position="relative" spacing={2} w="full">
-          {navigationItems.map((item, index) => (
-            <Button
-              key={item.id}
-              variant="ghost"
-              justifyContent="space-between"
-              w="full"
-              h="auto"
-              py={4}
-              px={2}
-              borderRadius={0}
-              borderBottom="1px solid"
-              borderColor="whiteAlpha.200"
-              color={activeSection === item.id ? "#d9ff43" : "white"}
-              fontSize={{
-                base: "3xl",
-                sm: "4xl",
-              }}
-              fontWeight={500}
-              letterSpacing="-0.035em"
-              opacity={isMenuOpen ? 1 : 0}
-              transform={isMenuOpen ? "translateX(0)" : "translateX(-24px)"}
-              transition={`
-                opacity 0.35s ease ${index * 0.06}s,
-                transform 0.35s ease ${index * 0.06}s,
-                color 0.2s ease
-              `}
-              onClick={() => handleNavigation(item.id)}
-              _hover={{
-                bg: "transparent",
-                color: "#d9ff43",
-              }}
-            >
-              <Text>{item.label}</Text>
-
-              <Text color="whiteAlpha.300" fontSize="xs" fontWeight={700} letterSpacing="0.14em">
-                {String(index + 1).padStart(2, "0")}
-              </Text>
-            </Button>
-          ))}
-        </Stack>
-
-        <Button
-          as="a"
-          href={SHOP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          leftIcon={<FaShoppingBag />}
-          rightIcon={<FaArrowRight />}
-          mt={10}
-          w="full"
-          h="60px"
-          borderRadius="full"
-          bg="#d9ff43"
-          color="#080a08"
-          fontSize="sm"
-          fontWeight={900}
-          letterSpacing="0.1em"
-          textTransform="uppercase"
-          opacity={isMenuOpen ? 1 : 0}
-          transform={isMenuOpen ? "translateY(0)" : "translateY(20px)"}
-          transition="opacity 0.35s ease 0.25s, transform 0.35s ease 0.25s"
-          _hover={{
-            bg: "#ecff9b",
-          }}
         >
+          {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+        </button>
+      </header>
+
+      <nav
+        id="mobile-navigation"
+        className={[styles.mobileNavigation, isMenuOpen ? styles.mobileNavigationOpen : ""].filter(Boolean).join(" ")}
+        aria-label="Mobile navigation"
+        aria-hidden={!isMenuOpen}
+      >
+        <div className={styles.glowTop} />
+        <div className={styles.glowBottom} />
+
+        <div className={styles.mobileLinks}>
+          {navigationItems.map((item, index) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              className={[styles.mobileLink, activeSection === item.id ? styles.mobileLinkActive : ""].filter(Boolean).join(" ")}
+              style={{
+                transitionDelay: isMenuOpen ? `${index * 60}ms` : "0ms",
+              }}
+              aria-current={activeSection === item.id ? "page" : undefined}
+              onClick={(event) => handleNavigation(event, item.id)}
+            >
+              <span>{item.label}</span>
+
+              <span className={styles.mobileIndex}>{String(index + 1).padStart(2, "0")}</span>
+            </Link>
+          ))}
+        </div>
+
+        <a href={SHOP_URL} target="_blank" rel="noopener noreferrer" className={styles.mobileStoreButton}>
+          <ShopIcon />
           Visit official store
-        </Button>
-      </Flex>
+          <ArrowIcon />
+        </a>
+      </nav>
     </>
   );
 }
 
-type NavLinkProps = {
-  children: ReactNode;
-  isActive?: boolean;
-  onClick: () => void;
-};
-
-export function NavLink({ children, isActive = false, onClick }: NavLinkProps) {
+function ArrowIcon() {
   return (
-    <Button
-      position="relative"
-      variant="ghost"
-      borderRadius="full"
-      color={isActive ? "#d9ff43" : "whiteAlpha.800"}
-      bg={isActive ? "rgba(217,255,67,0.08)" : "transparent"}
-      px={{ md: 3, lg: 4 }}
-      fontSize={{ md: "10px", lg: "xs" }}
-      fontWeight={700}
-      letterSpacing={{
-        md: "0.08em",
-        lg: "0.14em",
-      }}
-      textTransform="uppercase"
-      onClick={onClick}
-      transition="all 0.25s ease"
-      _hover={{
-        color: "#d9ff43",
-        bg: "rgba(217,255,67,0.06)",
-      }}
-      _after={{
-        content: '""',
-        position: "absolute",
-        left: "50%",
-        bottom: "3px",
-        w: isActive ? "18px" : "0",
-        h: "1px",
-        bg: "#d9ff43",
-        transform: "translateX(-50%)",
-        transition: "width 0.25s ease",
-      }}
-    >
-      {children}
-    </Button>
+    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+      <path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+      <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+      <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ShopIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false">
+      <path d="M6 8h12l-1 12H7L6 8Zm3 0V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }

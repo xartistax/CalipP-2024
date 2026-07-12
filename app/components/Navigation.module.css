@@ -1,0 +1,350 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  transition:
+    padding 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    backdrop-filter 0.3s ease;
+}
+
+.headerScrolled {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(8, 10, 8, 0.82);
+  backdrop-filter: blur(22px);
+}
+
+.logo {
+  position: relative;
+  width: 120px;
+  height: 40px;
+  flex-shrink: 0;
+  transition:
+    width 0.3s ease,
+    height 0.3s ease;
+}
+
+.headerScrolled .logo {
+  width: 105px;
+  height: 35px;
+}
+
+.logoImage {
+  object-fit: contain;
+  object-position: left center;
+}
+
+.desktopNavigation {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.headerScrolled .desktopNavigation {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.desktopLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.desktopLink:hover,
+.desktopLink:focus-visible {
+  color: #d9ff43;
+  background: rgba(217, 255, 67, 0.06);
+}
+
+.desktopLink::after {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  content: "";
+  background: #d9ff43;
+  transform: translateX(-50%);
+  transition: width 0.25s ease;
+}
+
+.activeLink {
+  color: #d9ff43;
+  background: rgba(217, 255, 67, 0.08);
+}
+
+.activeLink::after {
+  width: 18px;
+}
+
+.storeButton,
+.mobileStoreButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 999px;
+  background: #d9ff43;
+  color: #080a08;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.storeButton {
+  min-height: 40px;
+  padding: 0 24px;
+}
+
+.storeButton:hover,
+.storeButton:focus-visible,
+.mobileStoreButton:hover,
+.mobileStoreButton:focus-visible {
+  background: #ecff9b;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(217, 255, 67, 0.16);
+}
+
+.menuButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.menuButton:hover,
+.menuButton:focus-visible {
+  border-color: #d9ff43;
+  background: #d9ff43;
+  color: #080a08;
+}
+
+.mobileNavigation {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 90px 24px 40px;
+  overflow: hidden;
+  visibility: hidden;
+  background: rgba(5, 7, 5, 0.97);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+  backdrop-filter: blur(24px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.mobileNavigationOpen {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.glowTop,
+.glowBottom {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(110px);
+}
+
+.glowTop {
+  top: 15%;
+  right: -180px;
+  width: 460px;
+  height: 460px;
+  background: rgba(217, 255, 67, 0.09);
+}
+
+.glowBottom {
+  bottom: -180px;
+  left: -160px;
+  width: 420px;
+  height: 420px;
+  background: rgba(30, 215, 96, 0.06);
+}
+
+.mobileLinks {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mobileLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(-24px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    color 0.2s ease;
+}
+
+.mobileNavigationOpen .mobileLink {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.mobileLink:hover,
+.mobileLink:focus-visible,
+.mobileLinkActive {
+  color: #d9ff43;
+}
+
+.mobileIndex {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.mobileStoreButton {
+  position: relative;
+  width: 100%;
+  min-height: 60px;
+  margin-top: 40px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.35s ease 0.25s,
+    transform 0.35s ease 0.25s,
+    background-color 0.25s ease;
+}
+
+.mobileNavigationOpen .mobileStoreButton {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.header a:focus-visible,
+.header button:focus-visible,
+.mobileNavigation a:focus-visible {
+  outline: 2px solid #d9ff43;
+  outline-offset: 4px;
+}
+
+@media (max-width: 1100px) {
+  .desktopLink {
+    padding-right: 12px;
+    padding-left: 12px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .storeButton {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .header,
+  .headerScrolled {
+    padding: 16px 20px;
+  }
+
+  .logo,
+  .headerScrolled .logo {
+    width: 94px;
+    height: 32px;
+  }
+
+  .desktopNavigation,
+  .storeButton {
+    display: none;
+  }
+
+  .menuButton,
+  .mobileNavigation {
+    display: flex;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .mobileLink {
+    font-size: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .logo,
+  .desktopNavigation,
+  .desktopLink,
+  .desktopLink::after,
+  .storeButton,
+  .menuButton,
+  .mobileNavigation,
+  .mobileLink,
+  .mobileStoreButton {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -108,7 +108,6 @@ function LazySection({ id, children, minHeight, rootMargin = "800px 0px" }: Lazy
 }
 
 export default function CaliPWebsite() {
-  const [isReady, setIsReady] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -124,9 +123,7 @@ export default function CaliPWebsite() {
   });
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setIsReady(true);
-    }, 300);
+    const timer = window.setTimeout(() => {}, 300);
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
@@ -178,7 +175,7 @@ export default function CaliPWebsite() {
       <Navigation isScrolled={isScrolled} onNavigate={scrollToSection} />
 
       <Box as="main" id="main-content">
-        <Hero videoRef={videoRef} videoSrc={videoSrc} posterSrc={posterSrc} isReady={isReady} onNavigate={scrollToSection} />
+        <Hero videoRef={videoRef} videoSrc={videoSrc} posterSrc={posterSrc} onNavigate={scrollToSection} />
 
         <StatementSection />
 
