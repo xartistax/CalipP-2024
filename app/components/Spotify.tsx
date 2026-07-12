@@ -1,3 +1,4 @@
+"use client";
 import { Box, Container, Stack, Grid, Heading, Button, Flex, SimpleGrid, HStack, Skeleton, SkeletonText, Text, IconButton } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { FaSpotify, FaExternalLinkAlt, FaCompactDisc, FaPlay } from "react-icons/fa";

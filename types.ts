@@ -110,3 +110,8 @@ export type YoutubeVideo = {
 export type YoutubeResponse = {
   videos: YoutubeVideo[];
 };
+
+export type NavigationProps = {
+  isScrolled: boolean;
+  onNavigate?: (id: string) => void;
+};

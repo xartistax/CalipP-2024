@@ -1,3 +1,4 @@
+"use client";
 import { Box, Container, Divider, Heading, Icon, Link, SimpleGrid, Stack, Text, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { FaEnvelope, FaPhone } from "react-icons/fa";

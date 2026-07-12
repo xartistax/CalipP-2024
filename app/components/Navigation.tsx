@@ -2,13 +2,14 @@
 
 import { Box, Button, Flex, HStack, IconButton, Stack, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import { FaArrowRight, FaBars, FaShoppingBag, FaTimes } from "react-icons/fa";
 import { SHOP_URL } from "./CaliPWebsite";
 
 type NavigationProps = {
   isScrolled: boolean;
-  onNavigate: (id: string) => void;
+  onNavigate?: (id: string) => void;
 };
 
 const navigationItems = [
@@ -36,13 +37,24 @@ const navigationItems = [
     id: "booking",
     label: "Booking",
   },
-];
+] as const;
 
 export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+
+  const currentPathSection = pathname === "/" ? "home" : (navigationItems.find((item) => pathname === `/${item.id}`)?.id ?? "home");
+
+  const [activeSection, setActiveSection] = useState<string>(currentPathSection);
 
   useEffect(() => {
+    if (pathname !== "/") {
+      setActiveSection(currentPathSection);
+      return;
+    }
+
     const sections = navigationItems.map((item) => document.getElementById(item.id)).filter((section): section is HTMLElement => Boolean(section));
 
     if (sections.length === 0) return;
@@ -63,10 +75,14 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
       },
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
 
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      observer.disconnect();
+    };
+  }, [currentPathSection, pathname]);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "";
@@ -79,7 +95,18 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
   const handleNavigation = (id: string) => {
     setActiveSection(id);
     setIsMenuOpen(false);
-    onNavigate(id);
+
+    if (id === "home") {
+      router.push("/");
+      return;
+    }
+
+    if (pathname === "/") {
+      onNavigate?.(id);
+      return;
+    }
+
+    router.push(`/${id}`);
   };
 
   return (
@@ -104,7 +131,6 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
         backdropFilter={isScrolled || isMenuOpen ? "blur(22px)" : "none"}
         transition="all 0.3s ease"
       >
-        {/* Logo */}
         <Box
           as="button"
           type="button"
@@ -135,7 +161,6 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           />
         </Box>
 
-        {/* Desktop Navigation */}
         <HStack
           display={{ base: "none", md: "flex" }}
           position="absolute"
@@ -158,7 +183,6 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
             ))}
         </HStack>
 
-        {/* Desktop Store Button */}
         <Button
           as="a"
           href={SHOP_URL}
@@ -184,7 +208,6 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           Store
         </Button>
 
-        {/* Mobile Menu Button */}
         <IconButton
           display={{ base: "inline-flex", md: "none" }}
           aria-label={isMenuOpen ? "Close navigation" : "Open navigation"}
@@ -208,7 +231,6 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
         />
       </Flex>
 
-      {/* Mobile Fullscreen Menu */}
       <Flex
         display={{ base: "flex", md: "none" }}
         position="fixed"
@@ -225,14 +247,9 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
         visibility={isMenuOpen ? "visible" : "hidden"}
         pointerEvents={isMenuOpen ? "auto" : "none"}
         transform={isMenuOpen ? "translateY(0)" : "translateY(-20px)"}
-        transition="
-          opacity 0.3s ease,
-          transform 0.3s ease,
-          visibility 0.3s ease
-        "
+        transition="opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease"
         overflow="hidden"
       >
-        {/* Background Glow */}
         <Box
           position="absolute"
           top="15%"
@@ -257,7 +274,7 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           pointerEvents="none"
         />
 
-        <Stack position="relative" spacing={1} w="full">
+        <Stack position="relative" spacing={2} w="full">
           {navigationItems.map((item, index) => (
             <Button
               key={item.id}
@@ -318,10 +335,7 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           textTransform="uppercase"
           opacity={isMenuOpen ? 1 : 0}
           transform={isMenuOpen ? "translateY(0)" : "translateY(20px)"}
-          transition="
-            opacity 0.35s ease 0.25s,
-            transform 0.35s ease 0.25s
-          "
+          transition="opacity 0.35s ease 0.25s, transform 0.35s ease 0.25s"
           _hover={{
             bg: "#ecff9b",
           }}
@@ -348,9 +362,12 @@ export function NavLink({ children, isActive = false, onClick }: NavLinkProps) {
       color={isActive ? "#d9ff43" : "whiteAlpha.800"}
       bg={isActive ? "rgba(217,255,67,0.08)" : "transparent"}
       px={{ md: 3, lg: 4 }}
-      fontSize="xs"
+      fontSize={{ md: "10px", lg: "xs" }}
       fontWeight={700}
-      letterSpacing="0.14em"
+      letterSpacing={{
+        md: "0.08em",
+        lg: "0.14em",
+      }}
       textTransform="uppercase"
       onClick={onClick}
       transition="all 0.25s ease"
