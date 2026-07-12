@@ -150,7 +150,7 @@ function isRelevantArticle(article: PerigonArticle): boolean {
   const combinedText = `${title} ${description} ${content}`;
 
   // Offensichtliche Falschpositive ausschliessen
-  const excludedTerms = /\b(cali-poke|cal-poke|cali poke|cal poke)\b/iu;
+  const excludedTerms = /\b(cali-poke|cal-poke|cali poke|cal poke)\b/i;
 
   if (excludedTerms.test(combinedText)) {
     return false;
