@@ -17,6 +17,7 @@ const navigationItems = [
   { id: "music", label: "Music", href: "/music" },
   { id: "tour", label: "Tour", href: "/tour" },
   { id: "videos", label: "Videos", href: "/videos" },
+  { id: "press", label: "Press", href: "/press" },
   { id: "shop", label: "Shop", href: "/shop" },
   { id: "booking", label: "Booking", href: "/booking" },
 ] as const;

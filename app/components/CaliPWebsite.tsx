@@ -36,6 +36,10 @@ const BookingSection = dynamic(() => import("./Booking").then((module) => module
   loading: () => <SectionSkeleton height={{ base: "850px", md: "600px" }} />,
 });
 
+const PressSection = dynamic(() => import("./PressSection").then((module) => module.PressSection), {
+  loading: () => <SectionSkeleton height={{ base: "1000px", md: "850px" }} />,
+});
+
 const Footer = dynamic(() => import("./Footer").then((module) => module.Footer));
 
 type ResponsiveHeight = {
@@ -189,6 +193,10 @@ export default function CaliPWebsite() {
 
         <LazySection id="videos" minHeight={{ base: "900px", md: "700px" }}>
           <YoutubeSection />
+        </LazySection>
+
+        <LazySection id="press" minHeight={{ base: "1000px", md: "850px" }}>
+          <PressSection />
         </LazySection>
 
         <LazySection id="shop" minHeight={{ base: "600px", md: "450px" }}>
