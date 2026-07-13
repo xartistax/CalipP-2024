@@ -1,3 +1,4 @@
+"use client";
 import { Box, Button, Container, Flex, Grid, Heading, Stack, Text } from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa";
 import { SHOP_URL } from "./CaliPWebsite";
@@ -94,11 +95,12 @@ export function ShopSection() {
                     href={SHOP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onCanPlay={() => {
+                    onClick={() =>
                       trackEvent("store_click", {
-                        location: "store section",
-                      });
-                    }}
+                        location: "store_section",
+                        destination_url: SHOP_URL,
+                      })
+                    }
                     rightIcon={<FaArrowRight />}
                     w={{ base: "full", sm: "auto" }}
                     h={{ base: "62px", md: "72px" }}
