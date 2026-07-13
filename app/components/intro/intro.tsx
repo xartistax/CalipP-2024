@@ -4,14 +4,16 @@ import { Box, Button, Flex, HStack, IconButton, Stack, Text, VStack, VisuallyHid
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { FaEnvelope, FaShoppingBag, FaSpotify, FaTiktok, FaVolumeMute, FaVolumeUp, FaYoutube } from "react-icons/fa";
 import Image from "next/image";
+import { trackEvent } from "../../../lib/analytics";
 
 const SHOP_URL = "https://senmbelek-store.myshopify.com/";
 
-export const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => (
+export const SocialButton = ({ children, label, href, onClick }: { children: ReactNode; label: string; href: string; onClick?: () => void }) => (
   <chakra.a
     href={href}
     target={href.startsWith("http") ? "_blank" : undefined}
     rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+    onClick={onClick}
     aria-label={label}
     display="inline-flex"
     alignItems="center"
@@ -132,6 +134,12 @@ export default function Intro() {
           href={SHOP_URL}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() =>
+            trackEvent("shop_click", {
+              location: "intro",
+              destination_url: SHOP_URL,
+            })
+          }
           leftIcon={<FaShoppingBag />}
           borderRadius="full"
           bg="white"
@@ -184,6 +192,12 @@ export default function Intro() {
               href={SHOP_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                trackEvent("shop_click", {
+                  location: "intro",
+                  destination_url: SHOP_URL,
+                })
+              }
               leftIcon={<FaShoppingBag />}
               size="lg"
               borderRadius="full"

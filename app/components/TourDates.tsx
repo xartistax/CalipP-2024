@@ -6,6 +6,7 @@ import { FaArrowRight, FaCalendarAlt, FaMapMarkerAlt, FaTicketAlt } from "react-
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
 import { BandsintownEvent, EventsResponse } from "../../types";
+import { trackEvent } from "../../lib/analytics";
 
 export function TourDates() {
   const [events, setEvents] = useState<BandsintownEvent[]>([]);
@@ -212,6 +213,12 @@ function EventCard({ event }: { event: BandsintownEvent }) {
         href={eventUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() =>
+          trackEvent("tickets_click", {
+            location: "tour",
+            destination_url: eventUrl,
+          })
+        }
         leftIcon={ticketOffer ? <FaTicketAlt /> : <FaArrowRight />}
         w={{ base: "full", md: "auto" }}
         h="52px"

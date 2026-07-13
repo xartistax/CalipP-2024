@@ -9,6 +9,7 @@ import { SectionLabel } from "./StatementSection";
 import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { AnimatedCounter } from "./AnimatedCounter";
+import { trackEvent } from "../../lib/analytics";
 
 export function MusicSection() {
   const artistEmbedUrl = "https://open.spotify.com/embed/artist/3ecsQBXTAjmQyO3Nqq0KZV?utm_source=generator&theme=0";
@@ -175,6 +176,12 @@ export function MusicSection() {
                 href={SPOTIFY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() =>
+                  trackEvent("spotify_click", {
+                    location: "Spotify Section",
+                    destination_url: SPOTIFY_URL,
+                  })
+                }
                 leftIcon={<FaSpotify />}
                 rightIcon={<FaExternalLinkAlt />}
                 borderRadius="full"

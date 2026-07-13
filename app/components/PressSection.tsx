@@ -6,6 +6,7 @@ import { FaExternalLinkAlt, FaNewspaper } from "react-icons/fa";
 
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
+import { trackEvent } from "../../lib/analytics";
 
 type PressArticle = {
   id: string;
@@ -208,6 +209,15 @@ function PressCard({ article }: { article: PressArticle }) {
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() =>
+            trackEvent("press_click", {
+              source: article.source,
+
+              article_title: article.title,
+
+              destination_url: article.url,
+            })
+          }
           mt="auto"
           alignSelf="flex-start"
           rightIcon={<FaExternalLinkAlt />}

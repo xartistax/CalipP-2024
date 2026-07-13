@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { SHOP_URL, SPOTIFY_URL, TIKTOK_URL, YOUTUBE_URL } from "./CaliPWebsite";
 
 import styles from "./Hero.module.css";
+import { trackEvent } from "../../lib/analytics";
 
 type HeroProps = {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -49,7 +50,13 @@ export function Hero({ videoRef, videoSrc, posterSrc, onNavigate }: HeroProps) {
             preload="metadata"
             aria-hidden="true"
             tabIndex={-1}
-            onCanPlay={() => setIsVideoReady(true)}
+            onCanPlay={() => {
+              setIsVideoReady(true);
+
+              trackEvent("hero_video_loaded", {
+                location: "hero",
+              });
+            }}
             className={[styles.video, isVideoReady ? styles.videoReady : ""].filter(Boolean).join(" ")}
           >
             <source src={videoSrc} type="video/mp4" />
@@ -88,12 +95,36 @@ export function Hero({ videoRef, videoSrc, posterSrc, onNavigate }: HeroProps) {
           <p className={styles.description}>Bridging cultures, elevating consciousness and inspiring change through music.</p>
 
           <div className={styles.actions}>
-            <a href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer" className={`${styles.actionButton} ${styles.primaryButton}`}>
+            <a
+              href={SPOTIFY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${styles.actionButton} ${styles.primaryButton}`}
+              onClick={() =>
+                trackEvent("spotify_click", {
+                  location: "hero",
+
+                  destination_url: SPOTIFY_URL,
+                })
+              }
+            >
               <SpotifyIcon />
               Listen on Spotify
             </a>
 
-            <a href={SHOP_URL} target="_blank" rel="noopener noreferrer" className={`${styles.actionButton} ${styles.secondaryButton}`}>
+            <a
+              href={SHOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${styles.actionButton} ${styles.secondaryButton}`}
+              onClick={() =>
+                trackEvent("store_click", {
+                  location: "hero",
+
+                  destination_url: SHOP_URL,
+                })
+              }
+            >
               <ShopIcon />
               Visit store
             </a>
@@ -119,7 +150,18 @@ export function Hero({ videoRef, videoSrc, posterSrc, onNavigate }: HeroProps) {
         </div>
       </div>
 
-      <button type="button" className={styles.exploreButton} onClick={() => onNavigate("music")}>
+      <button
+        type="button"
+        className={styles.exploreButton}
+        onClick={() => {
+          trackEvent("explore_click", {
+            location: "hero",
+            destination: "music",
+          });
+
+          onNavigate("music");
+        }}
+      >
         <ArrowDownIcon />
         Explore
       </button>
@@ -143,6 +185,13 @@ function SocialLink({ label, href, children }: SocialLinkProps) {
       rel={isExternal ? "noopener noreferrer" : undefined}
       className={styles.socialLink}
       aria-label={label}
+      onClick={() =>
+        trackEvent("social_click", {
+          platform: label.toLowerCase(),
+          location: "hero",
+          destination_url: href,
+        })
+      }
     >
       {children}
     </a>

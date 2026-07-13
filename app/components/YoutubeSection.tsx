@@ -7,6 +7,7 @@ import { FaArrowRight, FaClock, FaEye, FaPlay, FaYoutube } from "react-icons/fa"
 import type { YoutubeResponse, YoutubeVideo } from "../../types";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
+import { trackEvent } from "../../lib/analytics";
 
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@calipmusic";
 
@@ -130,6 +131,13 @@ export function YoutubeSection() {
                   href={YOUTUBE_CHANNEL_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    trackEvent("youtube_click", {
+                      location: "youtube section",
+
+                      destination_url: YOUTUBE_CHANNEL_URL,
+                    })
+                  }
                   leftIcon={<FaYoutube />}
                   rightIcon={<FaArrowRight />}
                   borderRadius="full"

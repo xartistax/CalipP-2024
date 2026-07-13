@@ -5,6 +5,7 @@ import { SHOP_URL, SPOTIFY_URL, TIKTOK_URL, YOUTUBE_URL } from "./CaliPWebsite";
 import { SocialButton } from "./intro/intro";
 import { useState, useEffect } from "react";
 import { SpotifyRelease, SpotifyResponse } from "../../types";
+import { trackEvent } from "../../lib/analytics";
 
 export function Footer() {
   const [latestRelease, setLatestRelease] = useState<SpotifyRelease | null>(null);
@@ -126,6 +127,13 @@ export function Footer() {
               as="a"
               href={SPOTIFY_URL}
               target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackEvent("spotify_click", {
+                  location: "footer_primary",
+                  destination_url: SPOTIFY_URL,
+                })
+              }
               leftIcon={<FaSpotify />}
               bg="#1ED760"
               color="black"
@@ -143,6 +151,13 @@ export function Footer() {
               as="a"
               href={SHOP_URL}
               target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackEvent("store_click", {
+                  location: "footer_primary",
+                  destination_url: SHOP_URL,
+                })
+              }
               leftIcon={<FaShoppingBag />}
               variant="outline"
               borderRadius="full"
@@ -160,15 +175,45 @@ export function Footer() {
           </HStack>
 
           <HStack spacing={5}>
-            <SocialButton label="Spotify" href={SPOTIFY_URL}>
+            <SocialButton
+              label="Spotify"
+              href={SPOTIFY_URL}
+              onClick={() =>
+                trackEvent("social_click", {
+                  platform: "spotify",
+                  location: "footer_socials",
+                  destination_url: SPOTIFY_URL,
+                })
+              }
+            >
               <FaSpotify />
             </SocialButton>
 
-            <SocialButton label="YouTube" href={YOUTUBE_URL}>
+            <SocialButton
+              label="YouTube"
+              href={YOUTUBE_URL}
+              onClick={() =>
+                trackEvent("social_click", {
+                  platform: "youtube",
+                  location: "footer_socials",
+                  destination_url: YOUTUBE_URL,
+                })
+              }
+            >
               <FaYoutube />
             </SocialButton>
 
-            <SocialButton label="TikTok" href={TIKTOK_URL}>
+            <SocialButton
+              label="TikTok"
+              href={TIKTOK_URL}
+              onClick={() =>
+                trackEvent("social_click", {
+                  platform: "tiktok",
+                  location: "footer_socials",
+                  destination_url: TIKTOK_URL,
+                })
+              }
+            >
               <FaTiktok />
             </SocialButton>
           </HStack>
@@ -218,6 +263,15 @@ export function Footer() {
                   href={latestRelease.external_urls.spotify}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    trackEvent("release_play_click", {
+                      location: "footer_latest_release",
+                      release_name: latestRelease.name,
+                      release_date: latestRelease.release_date,
+                      release_type: latestRelease.album_type,
+                      destination_url: latestRelease.external_urls.spotify,
+                    })
+                  }
                   leftIcon={<FaPlay />}
                   flexShrink={0}
                   borderRadius="full"
@@ -225,6 +279,7 @@ export function Footer() {
                   color="black"
                   _hover={{
                     bg: "#54e582",
+
                     transform: "translateY(-2px)",
                   }}
                 >

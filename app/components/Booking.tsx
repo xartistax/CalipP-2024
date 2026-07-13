@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
+import { trackEvent } from "../../lib/analytics";
 
 export function BookingSection() {
   return (
@@ -45,11 +46,17 @@ export function BookingSection() {
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           <Reveal delay={0.08} distance={24} h="full">
             <ContactCard label="Management" company="Mouthwatering Records">
-              <ContactPerson name="Oriana Wilkinson" phone="+41 78 814 02 40" email="oriana@mouthwateringrecords.com" />
+              <ContactPerson
+                name="Oriana Wilkinson"
+                phone="+41 78 814 02 40"
+                email="oriana@mouthwateringrecords.com"
+                company="Mouthwatering Records"
+                contactType="management"
+              />
 
               <Divider borderColor="whiteAlpha.200" />
 
-              <ContactPerson name="Andreas Ryser" email="andreas@mouthwateringrecords.com" />
+              <ContactPerson name="Andreas Ryser" email="andreas@mouthwateringrecords.com" company="Mouthwatering Records" contactType="management" />
 
               <Text color="whiteAlpha.400" fontSize="sm">
                 3000 Bern, Switzerland
@@ -59,7 +66,7 @@ export function BookingSection() {
 
           <Reveal delay={0.16} distance={24} h="full">
             <ContactCard label="Booking" company="Nila Agency">
-              <ContactPerson name="Ivo Orlik" phone="+41 79 747 92 78" email="ivo@nila-agency.ch" />
+              <ContactPerson name="Ivo Orlik" phone="+41 79 747 92 78" email="ivo@nila-agency.ch" company="Nila Agency" contactType="booking" />
 
               <Text color="whiteAlpha.400" fontSize="sm">
                 3700 Chur, Switzerland
@@ -106,21 +113,47 @@ function ContactCard({ label, company, children }: { label: string; company: str
   );
 }
 
-function ContactPerson({ name, phone, email }: { name: string; phone?: string; email: string }) {
+function ContactPerson({
+  name,
+  company,
+  contactType,
+  phone,
+  email,
+}: {
+  name: string;
+  company: string;
+  contactType: "management" | "booking";
+  phone?: string;
+  email: string;
+}) {
+  const phoneHref = phone ? `tel:${phone.replace(/\s/g, "")}` : undefined;
+
+  const emailHref = `mailto:${email}`;
+
   return (
     <Stack spacing={4}>
       <Text fontSize="lg" fontWeight={600}>
         {name}
       </Text>
 
-      {phone && (
+      {phone && phoneHref && (
         <Link
-          href={`tel:${phone.replace(/\s/g, "")}`}
+          href={phoneHref}
           display="flex"
           alignItems="center"
           gap={3}
           color="whiteAlpha.600"
           transition="color 0.2s ease"
+          onClick={() =>
+            trackEvent("booking_phone_click", {
+              location: "booking_section",
+              contact_name: name,
+              company,
+              contact_type: contactType,
+              phone_number: phone,
+              destination_url: phoneHref,
+            })
+          }
           _hover={{
             color: "#d9ff43",
             textDecoration: "none",
@@ -132,13 +165,23 @@ function ContactPerson({ name, phone, email }: { name: string; phone?: string; e
       )}
 
       <Link
-        href={`mailto:${email}`}
+        href={emailHref}
         display="flex"
         alignItems="center"
         gap={3}
         color="whiteAlpha.600"
         wordBreak="break-word"
         transition="color 0.2s ease"
+        onClick={() =>
+          trackEvent("booking_email_click", {
+            location: "booking_section",
+            contact_name: name,
+            company,
+            contact_type: contactType,
+            email_address: email,
+            destination_url: emailHref,
+          })
+        }
         _hover={{
           color: "#d9ff43",
           textDecoration: "none",

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SHOP_URL } from "./CaliPWebsite";
 import styles from "./Navigation.module.css";
+import { trackEvent } from "../../lib/analytics";
 
 type NavigationProps = {
   isScrolled: boolean;
@@ -98,7 +99,20 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
   return (
     <>
       <header className={[styles.header, isScrolled || isMenuOpen ? styles.headerScrolled : ""].filter(Boolean).join(" ")}>
-        <Link href="/" className={styles.logo} aria-label="Cali P homepage" onClick={(event) => handleNavigation(event, "home")}>
+        <Link
+          href="/"
+          className={styles.logo}
+          aria-label="Cali P homepage"
+          onClick={(event) => {
+            trackEvent("logo_click", {
+              location: "header",
+              destination: "home",
+              destination_url: "/",
+            });
+
+            handleNavigation(event, "home");
+          }}
+        >
           <Image src="/logo.png" alt="Cali P" fill priority sizes="120px" className={styles.logoImage} />
         </Link>
 
@@ -111,14 +125,33 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
                 href={item.href}
                 className={[styles.desktopLink, activeSection === item.id ? styles.activeLink : ""].filter(Boolean).join(" ")}
                 aria-current={activeSection === item.id ? "page" : undefined}
-                onClick={(event) => handleNavigation(event, item.id)}
+                onClick={(event) => {
+                  trackEvent("navigation_click", {
+                    location: "desktop_navigation",
+                    destination: item.id,
+                    destination_url: item.href,
+                  });
+
+                  handleNavigation(event, item.id);
+                }}
               >
                 {item.label}
               </Link>
             ))}
         </nav>
 
-        <a href={SHOP_URL} target="_blank" rel="noopener noreferrer" className={styles.storeButton}>
+        <a
+          href={SHOP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.storeButton}
+          onClick={() =>
+            trackEvent("shop_click", {
+              location: "navigation",
+              destination_url: SHOP_URL,
+            })
+          }
+        >
           Store
           <ArrowIcon />
         </a>
@@ -154,7 +187,15 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
                 transitionDelay: isMenuOpen ? `${index * 60}ms` : "0ms",
               }}
               aria-current={activeSection === item.id ? "page" : undefined}
-              onClick={(event) => handleNavigation(event, item.id)}
+              onClick={(event) => {
+                trackEvent("navigation_click", {
+                  location: "mobile_navigation",
+                  destination: item.id,
+                  destination_url: item.href,
+                });
+
+                handleNavigation(event, item.id);
+              }}
             >
               <span>{item.label}</span>
 
@@ -163,7 +204,18 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           ))}
         </div>
 
-        <a href={SHOP_URL} target="_blank" rel="noopener noreferrer" className={styles.mobileStoreButton}>
+        <a
+          href={SHOP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.mobileStoreButton}
+          onClick={() =>
+            trackEvent("store_click", {
+              location: "mobile_navigation",
+              destination_url: SHOP_URL,
+            })
+          }
+        >
           <ShopIcon />
           Visit official store
           <ArrowIcon />
