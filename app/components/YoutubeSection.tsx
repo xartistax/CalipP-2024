@@ -1,6 +1,23 @@
 "use client";
 
-import { Box, Button, Container, Flex, Grid, Heading, HStack, Skeleton, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  Heading,
+  HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  Skeleton,
+  Stack,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaArrowRight, FaClock, FaEye, FaPlay, FaYoutube } from "react-icons/fa";
@@ -15,6 +32,10 @@ export function YoutubeSection() {
   const [videos, setVideos] = useState<YoutubeVideo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+  const [selectedVideo, setSelectedVideo] = useState<YoutubeVideo | null>(null);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -54,6 +75,24 @@ export function YoutubeSection() {
 
   const featuredVideo = videos[0];
   const additionalVideos = videos.slice(1, 4);
+
+  function playVideo(
+    video: YoutubeVideo,
+
+    location: "featured" | "video_list",
+  ) {
+    setSelectedVideo(video);
+
+    trackEvent("youtube_video_play", {
+      location,
+
+      video_id: video.id,
+
+      video_title: video.title,
+    });
+
+    onOpen();
+  }
 
   return (
     <Box id="videos" position="relative" overflow="hidden" bg="#0d100d" py={{ base: 20, md: 28 }} scrollMarginTop="90px">
@@ -172,13 +211,13 @@ export function YoutubeSection() {
               alignItems="stretch"
             >
               <Reveal distance={26}>
-                <FeaturedVideoCard video={featuredVideo} />
+                <FeaturedVideoCard video={featuredVideo} onPlay={() => playVideo(featuredVideo, "featured")} />
               </Reveal>
 
               <Stack spacing={2}>
                 {additionalVideos.map((video, index) => (
                   <Reveal key={video.id} delay={0.08 + index * 0.07} distance={20}>
-                    <SmallVideoCard video={video} />
+                    <SmallVideoCard video={video} onPlay={() => playVideo(video, "video_list")} />
                   </Reveal>
                 ))}
               </Stack>
@@ -186,32 +225,58 @@ export function YoutubeSection() {
           )}
         </Stack>
       </Container>
+      <VideoPlayerModal
+        video={selectedVideo}
+        isOpen={isOpen}
+        onClose={() => {
+          onClose();
+
+          setSelectedVideo(null);
+        }}
+      />
     </Box>
   );
 }
 
-function FeaturedVideoCard({ video }: { video: YoutubeVideo }) {
+function FeaturedVideoCard({
+  video,
+
+  onPlay,
+}: {
+  video: YoutubeVideo;
+
+  onPlay: () => void;
+}) {
   return (
     <Box
-      as="a"
-      href={video.url}
-      target="_blank"
-      rel="noopener noreferrer"
+      as="button"
+      type="button"
+      onClick={onPlay}
       display="block"
+      w="full"
       h="full"
       border="1px solid"
       borderColor="whiteAlpha.200"
       borderRadius={{ base: "26px", md: "36px" }}
       bg="rgba(255,255,255,0.035)"
+      color="white"
       overflow="hidden"
-      textDecoration="none"
+      textAlign="left"
       role="group"
+      cursor="pointer"
       transition="all 0.35s ease"
+      aria-label={`Play ${video.title}`}
       _hover={{
         borderColor: "rgba(217,255,67,0.55)",
+
         transform: "translateY(-6px)",
+
         boxShadow: "0 35px 100px rgba(0,0,0,0.4)",
-        textDecoration: "none",
+      }}
+      _focusVisible={{
+        outline: "2px solid #d9ff43",
+
+        outlineOffset: "4px",
       }}
     >
       <Box position="relative" aspectRatio={{ base: 16 / 10, md: 16 / 9 }} overflow="hidden" bg="black">
@@ -296,13 +361,13 @@ function FeaturedVideoCard({ video }: { video: YoutubeVideo }) {
   );
 }
 
-function SmallVideoCard({ video }: { video: YoutubeVideo }) {
+function SmallVideoCard({ video, onPlay }: { video: YoutubeVideo; onPlay: () => void }) {
   return (
     <Grid
-      as="a"
-      href={video.url}
-      target="_blank"
-      rel="noopener noreferrer"
+      as="button"
+      type="button"
+      onClick={onPlay}
+      w="full"
       templateColumns={{
         base: "130px minmax(0, 1fr)",
         sm: "190px minmax(0, 1fr)",
@@ -316,20 +381,25 @@ function SmallVideoCard({ video }: { video: YoutubeVideo }) {
       borderRadius="22px"
       bg="rgba(255,255,255,0.035)"
       color="white"
-      textDecoration="none"
+      textAlign="left"
       role="group"
+      cursor="pointer"
       transition="all 0.3s ease"
       _hover={{
         borderColor: "rgba(217,255,67,0.55)",
         transform: "translateY(-4px)",
         bg: "rgba(255,255,255,0.055)",
-        textDecoration: "none",
       }}
+      _focusVisible={{
+        outline: "2px solid #d9ff43",
+        outlineOffset: "3px",
+      }}
+      aria-label={`Play ${video.title}`}
     >
       <Box position="relative" aspectRatio={16 / 9} overflow="hidden" borderRadius="15px" bg="black">
         <Image
           src={video.thumbnail}
-          alt={video.title}
+          alt=""
           fill
           sizes="190px"
           style={{
@@ -383,6 +453,56 @@ function SmallVideoCard({ video }: { video: YoutubeVideo }) {
   );
 }
 
+function VideoPlayerModal({ video, isOpen, onClose }: { video: YoutubeVideo | null; isOpen: boolean; onClose: () => void }) {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} size="6xl" isCentered motionPreset="scale">
+      <ModalOverlay bg="blackAlpha.800" backdropFilter="blur(12px)" />
+
+      <ModalContent
+        mx={{ base: 4, md: 8 }}
+        overflow="hidden"
+        border="1px solid"
+        borderColor="whiteAlpha.300"
+        borderRadius={{ base: "20px", md: "30px" }}
+        bg="#080a08"
+      >
+        <ModalCloseButton
+          zIndex={3}
+          top={3}
+          right={3}
+          w="44px"
+          h="44px"
+          borderRadius="full"
+          bg="blackAlpha.700"
+          color="white"
+          _hover={{
+            bg: "#d9ff43",
+            color: "#080a08",
+          }}
+        />
+
+        <ModalBody p={0}>
+          {video && (
+            <Box position="relative" w="full" aspectRatio={16 / 9} bg="black">
+              <Box
+                as="iframe"
+                src={`https://www.youtube-nocookie.com/embed/${video.id}?autoplay=1&rel=0`}
+                title={video.title}
+                position="absolute"
+                inset={0}
+                w="full"
+                h="full"
+                border={0}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </Box>
+          )}
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+}
 function YoutubeSkeleton() {
   return (
     <Grid
