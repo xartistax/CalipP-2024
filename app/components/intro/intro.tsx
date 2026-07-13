@@ -135,7 +135,7 @@ export default function Intro() {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() =>
-            trackEvent("shop_click", {
+            trackEvent("store_click", {
               location: "intro",
               destination_url: SHOP_URL,
             })
@@ -193,7 +193,7 @@ export default function Intro() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() =>
-                trackEvent("shop_click", {
+                trackEvent("store_click", {
                   location: "intro",
                   destination_url: SHOP_URL,
                 })

@@ -3,6 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { SHOP_URL } from "./CaliPWebsite";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
+import { trackEvent } from "../../lib/analytics";
 
 export function ShopSection() {
   return (
@@ -93,6 +94,11 @@ export function ShopSection() {
                     href={SHOP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onCanPlay={() => {
+                      trackEvent("store_click", {
+                        location: "store section",
+                      });
+                    }}
                     rightIcon={<FaArrowRight />}
                     w={{ base: "full", sm: "auto" }}
                     h={{ base: "62px", md: "72px" }}

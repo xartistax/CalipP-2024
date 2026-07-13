@@ -146,7 +146,7 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
           rel="noopener noreferrer"
           className={styles.storeButton}
           onClick={() =>
-            trackEvent("shop_click", {
+            trackEvent("store_click", {
               location: "navigation",
               destination_url: SHOP_URL,
             })
