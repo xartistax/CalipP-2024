@@ -102,6 +102,8 @@ const structuredData = {
   ],
 };
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -119,7 +121,7 @@ export default function RootLayout({
           }}
         />
       </body>
-      <GoogleAnalytics gaId="G-2NKR5JPWHQ" />
+      {isProduction && <GoogleAnalytics gaId="G-2NKR5JPWHQ" />}
     </html>
   );
 }
