@@ -36,6 +36,10 @@ const BookingSection = dynamic(() => import("./Booking").then((module) => module
   loading: () => <SectionSkeleton height={{ base: "850px", md: "600px" }} />,
 });
 
+const NewsletterSection = dynamic(() => import("./NewsletterSection").then((module) => module.NewsletterSection), {
+  loading: () => <SectionSkeleton height={{ base: "850px", md: "600px" }} />,
+});
+
 const PressSection = dynamic(() => import("./PressSection").then((module) => module.PressSection), {
   loading: () => <SectionSkeleton height={{ base: "1000px", md: "850px" }} />,
 });
@@ -205,6 +209,10 @@ export default function CaliPWebsite() {
 
         <LazySection id="booking" minHeight={{ base: "850px", md: "600px" }}>
           <BookingSection />
+        </LazySection>
+
+        <LazySection id="newsletter" minHeight={{ base: "850px", md: "600px" }}>
+          <NewsletterSection />
         </LazySection>
       </Box>
 
