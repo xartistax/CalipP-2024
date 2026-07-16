@@ -77,7 +77,7 @@ export default function NotFound() {
             }}
             lineHeight={1.9}
           >
-            The page you're looking for doesn't exist, has been moved or is no longer available.
+            The page you&apos;re looking for doesn&apos;t exist.
           </Text>
 
           <Stack
