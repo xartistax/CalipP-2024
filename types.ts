@@ -31,7 +31,6 @@ export type SpotifyStats = {
   albums: number;
   singles: number;
   tracks: number;
-  latestRelease: string | null;
 };
 
 export type SpotifyReleasesResponse = {
@@ -40,6 +39,7 @@ export type SpotifyReleasesResponse = {
 
 export type SpotifyResponse = {
   items: SpotifyRelease[];
+  stats: SpotifyStats;
 };
 export type BandsintownEvent = {
   id: string;

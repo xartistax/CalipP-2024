@@ -81,35 +81,63 @@ export async function GET() {
 
     const token = await getAccessToken();
 
-    const response = await fetch(`${API_URL}/artists/${artistId}/albums?include_groups=album,single&market=CH&limit=20`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      next: {
-        revalidate: 3600,
-      },
-    });
+    const allReleases: SpotifyReleasesResponse["items"] = [];
+    let offset = 0;
+    const limit = 50;
 
-    if (!response.ok) {
-      const message = await response.text();
+    while (true) {
+      const response = await fetch(
+        `${API_URL}/artists/${artistId}/albums?include_groups=album,single,appears_on,compilation&market=CH&limit=${limit}&offset=${offset}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          next: {
+            revalidate: 3600,
+          },
+        },
+      );
 
-      throw new Error(`Spotify releases request failed: ${response.status} ${message}`);
+      if (!response.ok) {
+        const message = await response.text();
+
+        throw new Error(`Spotify releases request failed: ${response.status} ${message}`);
+      }
+
+      const data = (await response.json()) as SpotifyReleasesResponse;
+
+      allReleases.push(...data.items);
+
+      if (data.items.length < limit) {
+        break;
+      }
+
+      offset += limit;
     }
 
-    const releases = (await response.json()) as SpotifyReleasesResponse;
+    const uniqueReleases = Array.from(new Map(allReleases.map((release) => [release.id, release])).values());
+
+    const sortedReleases = uniqueReleases.sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
+
+    const stats = {
+      releases: sortedReleases.length,
+      albums: sortedReleases.filter((release) => release.album_type === "album").length,
+      singles: sortedReleases.filter((release) => release.album_type === "single").length,
+      tracks: sortedReleases.reduce((total, release) => total + release.total_tracks, 0),
+    };
+
+    const latestReleases = sortedReleases.slice(0, 6);
 
     const releasesWithColors = await Promise.all(
-      releases.items.map(async (release) => ({
+      latestReleases.map(async (release) => ({
         ...release,
-
         dominant_color: await getDominantColor(release.images[0]?.url),
       })),
     );
 
     return NextResponse.json({
-      ...releases,
-
       items: releasesWithColors,
+      stats,
     });
   } catch (error) {
     console.error("Spotify API error:", error);

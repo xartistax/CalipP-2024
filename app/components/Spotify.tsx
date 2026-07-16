@@ -3,7 +3,7 @@ import { Box, Container, Stack, Grid, Heading, Button, Flex, SimpleGrid, HStack,
 import { useState, useEffect } from "react";
 import { FaSpotify, FaExternalLinkAlt, FaCompactDisc, FaPlay } from "react-icons/fa";
 
-import { SpotifyRelease, SpotifyStats, SpotifyReleasesResponse } from "../../types";
+import { SpotifyRelease, SpotifyStats, SpotifyResponse } from "../../types";
 import { SPOTIFY_URL } from "./CaliPWebsite";
 import { SectionLabel } from "./StatementSection";
 import Image from "next/image";
@@ -15,6 +15,7 @@ export function MusicSection() {
   const artistEmbedUrl = "https://open.spotify.com/embed/artist/3ecsQBXTAjmQyO3Nqq0KZV?utm_source=generator&theme=0";
   const [isChanging, setIsChanging] = useState(false);
   const [releases, setReleases] = useState<SpotifyRelease[]>([]);
+  const [stats, setStats] = useState<SpotifyStats | null>(null);
   const [selectedRelease, setSelectedRelease] = useState<SpotifyRelease | null>(null);
 
   const [playerUrl, setPlayerUrl] = useState(artistEmbedUrl);
@@ -22,18 +23,6 @@ export function MusicSection() {
   const [hasError, setHasError] = useState(false);
 
   const activeColor = selectedRelease?.dominant_color ?? "rgb(30, 215, 96)";
-
-  const spotifyStats: SpotifyStats = {
-    releases: releases.length,
-
-    albums: releases.filter((release) => release.album_type === "album").length,
-
-    singles: releases.filter((release) => release.album_type === "single").length,
-
-    tracks: releases.reduce((total, release) => total + release.total_tracks, 0),
-
-    latestRelease: releases[0]?.name ?? null,
-  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -51,11 +40,12 @@ export function MusicSection() {
           throw new Error(`Spotify request failed: ${response.status}`);
         }
 
-        const data = (await response.json()) as SpotifyReleasesResponse;
+        const data = (await response.json()) as SpotifyResponse;
 
         const uniqueReleases = getUniqueSpotifyReleases(data.items);
 
         setReleases(uniqueReleases);
+        setStats(data.stats);
 
         if (uniqueReleases.length > 0) {
           selectSpotifyRelease(uniqueReleases[0]);
@@ -199,7 +189,7 @@ export function MusicSection() {
             </Stack>
           </Grid>
 
-          {!isLoading && !hasError && releases.length > 0 && <SpotifyStatsBar stats={spotifyStats} />}
+          {!isLoading && !hasError && releases.length > 0 && stats && <SpotifyStatsBar stats={stats} />}
 
           {isLoading && <SpotifyReleasesSkeleton />}
 
