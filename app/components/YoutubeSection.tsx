@@ -26,6 +26,7 @@ import type { YoutubeResponse, YoutubeVideo } from "../../types";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
 import { trackEvent } from "../../lib/analytics";
+import { AnimatedCounter } from "./AnimatedCounter";
 
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@calipmusic";
 
@@ -162,7 +163,7 @@ export function YoutubeSection() {
                   >
                     <YoutubeStat value={youtubeStats.videoCount} label="Videos" />
 
-                    <YoutubeStat value={youtubeStats.viewCount} label="Total views" compact />
+                    <YoutubeStat value={youtubeStats.viewCount} label="Total views" />
                   </SimpleGrid>
                 )}
 
@@ -610,7 +611,15 @@ function cleanDescription(description: string): string {
   return cleaned || "Watch the latest Cali P video on the official YouTube channel.";
 }
 
-function YoutubeStat({ value, label, compact = false }: { value: number; label: string; compact?: boolean }) {
+function YoutubeStat({
+  value,
+
+  label,
+}: {
+  value: number;
+
+  label: string;
+}) {
   return (
     <Stack
       spacing={2}
@@ -625,9 +634,14 @@ function YoutubeStat({ value, label, compact = false }: { value: number; label: 
         borderRight: "none",
       }}
     >
-      <Text color="#d9ff43" fontSize={{ base: "3xl", md: "4xl" }} fontWeight={700} lineHeight={1} letterSpacing="-0.04em">
-        {compact ? formatViews(String(value)) : value}
-      </Text>
+      <AnimatedCounter
+        value={value}
+        duration={1500}
+        color="#d9ff43"
+        fontSize={{ base: "3xl", md: "4xl" }}
+        fontWeight={700}
+        formatter={(value) => formatViews(String(value))}
+      />
 
       <Text color="whiteAlpha.500" fontSize="xs" fontWeight={700} letterSpacing="0.16em" textTransform="uppercase">
         {label}

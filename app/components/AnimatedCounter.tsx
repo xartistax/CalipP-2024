@@ -6,10 +6,12 @@ import { useEffect, useRef, useState } from "react";
 type AnimatedCounterProps = TextProps & {
   value: number;
   duration?: number;
+  formatter?: (value: number) => string;
 };
 
-export function AnimatedCounter({ value, duration = 1200, ...props }: AnimatedCounterProps) {
+export function AnimatedCounter({ value, duration = 1200, formatter, ...props }: AnimatedCounterProps) {
   const [displayValue, setDisplayValue] = useState(0);
+
   const counterRef = useRef<HTMLParagraphElement>(null);
   const hasAnimated = useRef(false);
 
@@ -30,7 +32,6 @@ export function AnimatedCounter({ value, duration = 1200, ...props }: AnimatedCo
           const elapsed = currentTime - startTime;
           const progress = Math.min(elapsed / duration, 1);
 
-          // Weiches Abbremsen am Ende
           const easedProgress = 1 - Math.pow(1 - progress, 3);
 
           setDisplayValue(Math.round(value * easedProgress));
@@ -41,6 +42,7 @@ export function AnimatedCounter({ value, duration = 1200, ...props }: AnimatedCo
         };
 
         requestAnimationFrame(animate);
+
         observer.disconnect();
       },
       {
@@ -55,7 +57,7 @@ export function AnimatedCounter({ value, duration = 1200, ...props }: AnimatedCo
 
   return (
     <Text ref={counterRef} {...props}>
-      {displayValue.toLocaleString("en-US")}
+      {formatter ? formatter(displayValue) : displayValue.toLocaleString("en-US")}
     </Text>
   );
 }
