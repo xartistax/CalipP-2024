@@ -7,12 +7,19 @@ export async function GET() {
   const channelId = process.env.YOUTUBE_CHANNEL_ID;
 
   if (!apiKey || !channelId) {
-    return NextResponse.json({ error: "YouTube configuration is missing." }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "YouTube configuration is missing.",
+      },
+      {
+        status: 500,
+      },
+    );
   }
 
   try {
-    // 1. Upload-Playlist des Channels holen
-    const channelResponse = await fetch(`${API}/channels?part=contentDetails&id=${channelId}&key=${apiKey}`, {
+    // Channel (Uploads + Statistics)
+    const channelResponse = await fetch(`${API}/channels?part=contentDetails,statistics&id=${channelId}&key=${apiKey}`, {
       next: {
         revalidate: 3600,
       },
@@ -24,13 +31,15 @@ export async function GET() {
 
     const channelData = await channelResponse.json();
 
-    const uploadsPlaylistId = channelData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+    const channel = channelData.items?.[0];
+
+    const uploadsPlaylistId = channel?.contentDetails?.relatedPlaylists?.uploads;
 
     if (!uploadsPlaylistId) {
       throw new Error("Uploads playlist not found.");
     }
 
-    // 2. Letzte Videos holen
+    // Latest videos
     const playlistResponse = await fetch(`${API}/playlistItems?part=snippet,contentDetails&playlistId=${uploadsPlaylistId}&maxResults=4&key=${apiKey}`, {
       next: {
         revalidate: 3600,
@@ -45,7 +54,7 @@ export async function GET() {
 
     const videoIds = playlistData.items.map((item: { contentDetails: { videoId: string } }) => item.contentDetails.videoId).join(",");
 
-    // 3. Views, Dauer usw.
+    // Video details
     const videosResponse = await fetch(`${API}/videos?part=statistics,contentDetails&id=${videoIds}&key=${apiKey}`, {
       next: {
         revalidate: 3600,
@@ -117,6 +126,12 @@ export async function GET() {
 
     return NextResponse.json({
       videos,
+
+      stats: {
+        videoCount: Number(channel.statistics?.videoCount ?? 0),
+        viewCount: Number(channel.statistics?.viewCount ?? 0),
+        subscriberCount: Number(channel.statistics?.subscriberCount ?? 0),
+      },
     });
   } catch (error) {
     console.error("YouTube API:", error);

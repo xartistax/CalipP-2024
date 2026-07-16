@@ -107,11 +107,17 @@ export type YoutubeVideo = {
   duration: string;
 };
 
-export type YoutubeResponse = {
-  videos: YoutubeVideo[];
-};
-
 export type NavigationProps = {
   isScrolled: boolean;
   onNavigate?: (id: string) => void;
+};
+
+export type YoutubeResponse = {
+  videos: YoutubeVideo[];
+
+  stats: {
+    videoCount: number;
+    viewCount: number;
+    subscriberCount: number;
+  };
 };

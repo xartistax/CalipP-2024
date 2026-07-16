@@ -13,6 +13,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  SimpleGrid,
   Skeleton,
   Stack,
   Text,
@@ -30,9 +31,10 @@ const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@calipmusic";
 
 export function YoutubeSection() {
   const [videos, setVideos] = useState<YoutubeVideo[]>([]);
+  const [youtubeStats, setYoutubeStats] = useState<YoutubeResponse["stats"] | null>(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-
   const [selectedVideo, setSelectedVideo] = useState<YoutubeVideo | null>(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,13 +58,17 @@ export function YoutubeSection() {
         const data = (await response.json()) as YoutubeResponse;
 
         setVideos(Array.isArray(data.videos) ? data.videos : []);
+
+        setYoutubeStats(data.stats ?? null);
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
 
         console.error("YouTube frontend error:", error);
+
         setHasError(true);
+        setYoutubeStats(null);
       } finally {
         setIsLoading(false);
       }
@@ -76,27 +82,26 @@ export function YoutubeSection() {
   const featuredVideo = videos[0];
   const additionalVideos = videos.slice(1, 4);
 
-  function playVideo(
-    video: YoutubeVideo,
-
-    location: "featured" | "video_list",
-  ) {
+  function playVideo(video: YoutubeVideo, location: "featured" | "video_list") {
     setSelectedVideo(video);
 
     trackEvent("youtube_video_play", {
       location,
-
       video_id: video.id,
-
       video_title: video.title,
+      destination_url: video.url,
     });
 
     onOpen();
   }
 
+  function closeVideo() {
+    onClose();
+    setSelectedVideo(null);
+  }
+
   return (
     <Box id="videos" position="relative" overflow="hidden" bg="#0d100d" py={{ base: 20, md: 28 }} scrollMarginTop="90px">
-      {/* Ambient glow */}
       <Box
         position="absolute"
         top="-220px"
@@ -111,13 +116,12 @@ export function YoutubeSection() {
 
       <Container position="relative" maxW="7xl">
         <Stack spacing={{ base: 12, md: 16 }}>
-          {/* Section header */}
           <Grid
             templateColumns={{
               base: "1fr",
-              lg: "1fr 0.75fr",
+              lg: "minmax(0, 1.05fr) minmax(360px, 0.65fr)",
             }}
-            gap={{ base: 8, lg: 16 }}
+            gap={{ base: 10, lg: 16 }}
             alignItems="end"
           >
             <Reveal distance={28}>
@@ -145,23 +149,24 @@ export function YoutubeSection() {
             </Reveal>
 
             <Reveal delay={0.1} distance={22}>
-              <Stack
-                align={{
-                  base: "flex-start",
-                  lg: "flex-end",
-                }}
-                spacing={5}
-              >
-                <Text
-                  maxW="540px"
-                  color="whiteAlpha.600"
-                  fontSize={{ base: "md", md: "lg" }}
-                  lineHeight={1.8}
-                  textAlign={{
-                    base: "left",
-                    lg: "right",
-                  }}
-                >
+              <Stack w="full" maxW={{ lg: "520px" }} justifySelf={{ lg: "end" }} spacing={6}>
+                {!isLoading && !hasError && youtubeStats && (
+                  <SimpleGrid
+                    columns={2}
+                    w="full"
+                    overflow="hidden"
+                    border="1px solid"
+                    borderColor="whiteAlpha.200"
+                    borderRadius="24px"
+                    bg="rgba(255,255,255,0.035)"
+                  >
+                    <YoutubeStat value={youtubeStats.videoCount} label="Videos" />
+
+                    <YoutubeStat value={youtubeStats.viewCount} label="Total views" compact />
+                  </SimpleGrid>
+                )}
+
+                <Text color="whiteAlpha.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.8} textAlign={{ base: "left", lg: "right" }}>
                   Music videos, live performances and recent releases from the official Cali P YouTube channel.
                 </Text>
 
@@ -172,11 +177,14 @@ export function YoutubeSection() {
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent("youtube_click", {
-                      location: "youtube section",
-
+                      location: "youtube_section",
                       destination_url: YOUTUBE_CHANNEL_URL,
                     })
                   }
+                  alignSelf={{
+                    base: "flex-start",
+                    lg: "flex-end",
+                  }}
                   leftIcon={<FaYoutube />}
                   rightIcon={<FaArrowRight />}
                   borderRadius="full"
@@ -205,16 +213,16 @@ export function YoutubeSection() {
             <Grid
               templateColumns={{
                 base: "1fr",
-                lg: "minmax(0, 1.35fr) minmax(320px, 0.65fr)",
+                lg: "minmax(0, 1.15fr) minmax(320px, 0.85fr)",
               }}
               gap={{ base: 6, lg: 8 }}
-              alignItems="stretch"
+              alignItems="start"
             >
               <Reveal distance={26}>
                 <FeaturedVideoCard video={featuredVideo} onPlay={() => playVideo(featuredVideo, "featured")} />
               </Reveal>
 
-              <Stack spacing={2}>
+              <Stack spacing={4}>
                 {additionalVideos.map((video, index) => (
                   <Reveal key={video.id} delay={0.08 + index * 0.07} distance={20}>
                     <SmallVideoCard video={video} onPlay={() => playVideo(video, "video_list")} />
@@ -225,15 +233,8 @@ export function YoutubeSection() {
           )}
         </Stack>
       </Container>
-      <VideoPlayerModal
-        video={selectedVideo}
-        isOpen={isOpen}
-        onClose={() => {
-          onClose();
 
-          setSelectedVideo(null);
-        }}
-      />
+      <VideoPlayerModal video={selectedVideo} isOpen={isOpen} onClose={closeVideo} />
     </Box>
   );
 }
@@ -279,7 +280,7 @@ function FeaturedVideoCard({
         outlineOffset: "4px",
       }}
     >
-      <Box position="relative" aspectRatio={{ base: 16 / 10, md: 16 / 9 }} overflow="hidden" bg="black">
+      <Box position="relative" aspectRatio={16 / 9} overflow="hidden" bg="black">
         <Image
           src={video.thumbnail}
           alt={video.title}
@@ -334,17 +335,17 @@ function FeaturedVideoCard({
         </HStack>
       </Box>
 
-      <Stack spacing={4} p={{ base: 6, md: 8 }}>
+      <Stack spacing={3} p={{ base: 5, md: 6 }}>
         <HStack color="#ff3157" fontSize="xs" fontWeight={800} letterSpacing="0.16em" textTransform="uppercase">
           <FaYoutube />
           <Text>Featured video</Text>
         </HStack>
 
-        <Heading fontSize={{ base: "2xl", md: "4xl" }} fontWeight={500} lineHeight={1.12} letterSpacing="-0.035em" noOfLines={2}>
+        <Heading fontSize={{ base: "xl", md: "2xl" }} fontWeight={600} lineHeight={1.2} letterSpacing="-0.025em" noOfLines={2}>
           {video.title}
         </Heading>
 
-        <Text color="whiteAlpha.600" fontSize={{ base: "sm", md: "md" }} lineHeight={1.75} noOfLines={3}>
+        <Text color="whiteAlpha.600" fontSize="sm" lineHeight={1.7} noOfLines={2}>
           {cleanDescription(video.description)}
         </Text>
 
@@ -607,4 +608,30 @@ function cleanDescription(description: string): string {
     .trim();
 
   return cleaned || "Watch the latest Cali P video on the official YouTube channel.";
+}
+
+function YoutubeStat({ value, label, compact = false }: { value: number; label: string; compact?: boolean }) {
+  return (
+    <Stack
+      spacing={2}
+      align="center"
+      justify="center"
+      minH={{ base: "105px", md: "120px" }}
+      px={5}
+      py={6}
+      borderRight="1px solid"
+      borderColor="whiteAlpha.200"
+      _last={{
+        borderRight: "none",
+      }}
+    >
+      <Text color="#d9ff43" fontSize={{ base: "3xl", md: "4xl" }} fontWeight={700} lineHeight={1} letterSpacing="-0.04em">
+        {compact ? formatViews(String(value)) : value}
+      </Text>
+
+      <Text color="whiteAlpha.500" fontSize="xs" fontWeight={700} letterSpacing="0.16em" textTransform="uppercase">
+        {label}
+      </Text>
+    </Stack>
+  );
 }
