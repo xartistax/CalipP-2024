@@ -16,6 +16,10 @@ const siteUrl = "https://www.calipmusic.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
+  other: {
+    developer: "Demian Füglistaler",
+  },
+
   title: {
     default: "Cali P | Official Website",
     template: "%s | Cali P",
