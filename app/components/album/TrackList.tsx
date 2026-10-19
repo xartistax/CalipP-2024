@@ -8,7 +8,7 @@ export interface Track {
   id: string;
   title: string;
   track_number: number;
-  duration?: string;
+  duration?: number | null;
 }
 
 interface TrackListProps {
@@ -182,7 +182,7 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
                   flexShrink: 0,
                 }}
               >
-                {track.duration ?? "—:—"}
+                {formatDuration(track.duration) ?? "—:—"}
               </span>
             </motion.button>
           );
@@ -203,4 +203,14 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
       </div>
     </section>
   );
+}
+function formatDuration(seconds?: number | null): string {
+  if (seconds == null || !Number.isFinite(seconds)) {
+    return "—";
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  const remaining = Math.floor(seconds % 60);
+
+  return `${minutes}:${String(remaining).padStart(2, "0")}`;
 }
