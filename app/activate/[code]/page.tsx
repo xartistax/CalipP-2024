@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "../../../lib/auth-client";
@@ -8,74 +8,63 @@ import { authClient } from "../../../lib/auth-client";
 type ActivationResponse = {
   success?: boolean;
   alreadyActivated?: boolean;
+  alreadyOwned?: boolean;
   slug?: string;
   error?: string;
 };
 
+type ActivationStatus = "idle" | "activating" | "success" | "already-owned" | "error";
+
 export default function ActivatePage() {
   const router = useRouter();
-  const params = useParams<{ code: string }>();
-
-  const code = params.code;
+  const { code } = useParams<{ code: string }>();
 
   const { data: session, isPending } = authClient.useSession();
 
-  const [status, setStatus] = useState<"idle" | "activating" | "success" | "error">("idle");
-
+  const [status, setStatus] = useState<ActivationStatus>("idle");
   const [error, setError] = useState("");
 
-  // Verhindert doppelte Aktivierungsanfragen.
-  const started = useRef(false);
-
-  useEffect(() => {
-    if (isPending || !session || !code || started.current) {
+  async function handleActivation() {
+    if (!session || !code || status !== "idle") {
       return;
     }
 
-    started.current = true;
+    setStatus("activating");
+    setError("");
 
-    async function activate() {
-      setStatus("activating");
+    try {
+      const response = await fetch("/api/activate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      });
 
-      try {
-        const response = await fetch("/api/activate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ code }),
-        });
+      const data: ActivationResponse = await response.json();
 
-        const text = await response.text();
-
-        console.log("API Status:", response.status);
-        console.log("API Response:", text);
-
-        let data: ActivationResponse;
-
-        try {
-          data = JSON.parse(text);
-        } catch {
-          throw new Error(`API returned HTML instead of JSON (HTTP ${response.status})`);
-        }
-
-        if (!response.ok || !data.success || !data.slug) {
-          throw new Error(data.error || "Activation failed.");
-        }
-
-        setStatus("success");
-
-        router.replace(`/albums/${data.slug}`);
-        router.refresh();
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Activation failed.");
-
-        setStatus("error");
+      if (!response.ok || !data.success || !data.slug) {
+        throw new Error(data.error || "Activation failed.");
       }
-    }
 
-    activate();
-  }, [code, session, isPending, router]);
+      // User already owns the album.
+      // The new NFC code has NOT been consumed.
+      if (data.alreadyOwned) {
+        setStatus("already-owned");
+        return;
+      }
+
+      // Successful activation.
+      setStatus("success");
+
+      router.replace(`/albums/${data.slug}`);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Activation failed.");
+
+      setStatus("error");
+    }
+  }
 
   if (isPending) {
     return (
@@ -95,7 +84,7 @@ export default function ActivatePage() {
 
           <h2>Unlock your album</h2>
 
-          <p style={descriptionStyle}>Sign in or create an account to activate your NFC album card.</p>
+          <p style={descriptionStyle}>Sign in or create an account to activate your exclusive NFC album card.</p>
 
           <Link href={`/login?callbackURL=${encodeURIComponent(redirectTo)}`} style={buttonStyle}>
             SIGN IN
@@ -114,9 +103,29 @@ export default function ActivatePage() {
       <div style={cardStyle}>
         <h1 style={headingStyle}>CALI P</h1>
 
+        {status === "idle" && (
+          <>
+            <p style={eyebrowStyle}>EXCLUSIVE DELUXE EDITION</p>
+
+            <h2 style={titleStyle}>iThoughts</h2>
+
+            <p style={descriptionStyle}>Activate your NFC album card to unlock your exclusive Cali P music experience.</p>
+
+            <p style={accountStyle}>Signed in as {session.user.email}</p>
+
+            <button type="button" onClick={handleActivation} style={buttonStyle}>
+              ACTIVATE ALBUM
+            </button>
+
+            <Link href="/account" style={secondaryButtonStyle}>
+              MY ACCOUNT
+            </Link>
+          </>
+        )}
+
         {status === "activating" && (
           <>
-            <h2>Activating your album...</h2>
+            <h2 style={titleStyle}>Activating...</h2>
 
             <p style={descriptionStyle}>Please wait while we unlock your music.</p>
           </>
@@ -124,26 +133,48 @@ export default function ActivatePage() {
 
         {status === "success" && (
           <>
-            <h2>Album unlocked!</h2>
+            <h2 style={titleStyle}>Album unlocked!</h2>
 
             <p style={descriptionStyle}>Redirecting to your music...</p>
           </>
         )}
 
+        {status === "already-owned" && (
+          <>
+            <p style={eyebrowStyle}>ALREADY UNLOCKED</p>
+
+            <h2 style={titleStyle}>You already own this album</h2>
+
+            <p style={descriptionStyle}>iThoughts is already part of your collection. This NFC activation code has not been used.</p>
+
+            <Link href="/albums/i-thoughts-10years" style={buttonStyle}>
+              GO TO MY ALBUM
+            </Link>
+
+            <Link href="/account" style={secondaryButtonStyle}>
+              MY ACCOUNT
+            </Link>
+          </>
+        )}
+
         {status === "error" && (
           <>
-            <h2>Activation failed</h2>
+            <h2 style={titleStyle}>Activation failed</h2>
 
-            <p style={{ color: "#ff6b6b", marginTop: "16px" }}>{error}</p>
+            <p
+              style={{
+                ...descriptionStyle,
+                color: "#ff6b6b",
+              }}
+            >
+              {error}
+            </p>
 
             <button
+              type="button"
               onClick={() => {
-                started.current = false;
                 setError("");
                 setStatus("idle");
-
-                // Erneute Aktivierung beim nächsten Render.
-                router.refresh();
               }}
               style={buttonStyle}
             >
@@ -155,15 +186,13 @@ export default function ActivatePage() {
             </Link>
           </>
         )}
-
-        {status === "idle" && <p style={descriptionStyle}>Preparing activation...</p>}
       </div>
     </main>
   );
 }
 
 const pageStyle: React.CSSProperties = {
-  minHeight: "100vh",
+  minHeight: "100dvh",
   background: "#050505",
   color: "#fff",
   display: "flex",
@@ -182,13 +211,32 @@ const headingStyle: React.CSSProperties = {
   color: "#F5B52E",
   fontSize: "38px",
   fontWeight: 800,
-  marginBottom: "40px",
+  marginBottom: "36px",
+};
+
+const eyebrowStyle: React.CSSProperties = {
+  color: "#F5B52E",
+  fontSize: "11px",
+  letterSpacing: "3px",
+  marginBottom: "14px",
+};
+
+const titleStyle: React.CSSProperties = {
+  fontSize: "32px",
+  fontWeight: 800,
+  margin: "0",
 };
 
 const descriptionStyle: React.CSSProperties = {
   color: "#999",
   lineHeight: 1.7,
   margin: "20px 0 30px",
+};
+
+const accountStyle: React.CSSProperties = {
+  color: "#777",
+  fontSize: "12px",
+  marginBottom: "24px",
 };
 
 const buttonStyle: React.CSSProperties = {
@@ -203,6 +251,8 @@ const buttonStyle: React.CSSProperties = {
   textDecoration: "none",
   cursor: "pointer",
   marginTop: "16px",
+  fontSize: "13px",
+  letterSpacing: "1px",
 };
 
 const secondaryButtonStyle: React.CSSProperties = {
