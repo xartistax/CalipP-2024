@@ -16,6 +16,7 @@ type NavigationProps = {
 const navigationItems = [
   { id: "home", label: "Home", href: "/" },
   { id: "music", label: "Music", href: "/music" },
+  { id: "ithoughts", label: "iTHOUGHTS", href: "/account" },
   { id: "tour", label: "Tour", href: "/tour" },
   { id: "videos", label: "Videos", href: "/videos" },
   { id: "press", label: "Press", href: "/press" },
@@ -78,7 +79,7 @@ export function Navigation({ isScrolled, onNavigate }: NavigationProps) {
     setIsMenuOpen(false);
     setActiveSection(id);
 
-    if (pathname !== "/") {
+    if (pathname !== "/" || id === "ithoughts") {
       return;
     }
 

@@ -10,6 +10,8 @@ import { AudioProvider } from "../../components/album/AudioProvider";
 import MiniPlayer from "../../components/album/MiniPlayer";
 import AlbumBooklet from "../../components/album/AlbumBooklet";
 import MediaSession from "../../components/album/MediaSession";
+import Link from "next/link";
+import { IoArrowBack } from "react-icons/io5";
 
 export default function AlbumPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -101,6 +103,30 @@ export default function AlbumPage() {
           position: "relative",
         }}
       >
+        {/* Back to account */}
+        <Link
+          href="/account"
+          aria-label="Back to my account"
+          style={{
+            position: "absolute",
+            top: "max(24px, env(safe-area-inset-top))",
+            left: "clamp(20px, 5vw, 48px)",
+            zIndex: 10,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "10px 0",
+            color: "#F5B52E",
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: "1.5px",
+            textDecoration: "none",
+            transition: "opacity 0.2s ease",
+          }}
+        >
+          <IoArrowBack size={17} />
+          MY ACCOUNT
+        </Link>
         {/* Background Glow */}
         <div
           style={{
