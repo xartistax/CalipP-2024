@@ -18,7 +18,8 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
     SELECT
       t.id,
       t.title,
-      t.track_number
+      t.track_number,
+      t.duration
     FROM tracks t
     JOIN albums a ON a.id = t.album_id
     JOIN user_albums ua ON ua.album_id = a.id
