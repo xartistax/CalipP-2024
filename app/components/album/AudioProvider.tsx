@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useRef, useState, ReactNode, useCallback } from "react";
 
 import type { Track } from "./TrackList";
+import { trackEvent } from "../../../lib/analytics";
 
 interface AudioContextType {
   currentTrack: Track | null;
@@ -22,8 +23,15 @@ interface AudioContextType {
 
 const AudioContext = createContext<AudioContextType | null>(null);
 
+const analyticsParams = {
+  album: "i-thoughts-10years",
+  campaign: "nfc_promo_2026",
+};
+
 export function AudioProvider({ children, tracks }: { children: ReactNode; tracks: Track[] }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentTrackRef = useRef<Track | null>(null);
+  const lastCompletedRef = useRef(false);
 
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -33,48 +41,125 @@ export function AudioProvider({ children, tracks }: { children: ReactNode; track
   const [repeatMode, setRepeatMode] = useState<"off" | "all" | "one">("off");
 
   useEffect(() => {
+    currentTrackRef.current = currentTrack;
+  }, [currentTrack]);
+
+  useEffect(() => {
     const audio = new Audio();
     audioRef.current = audio;
 
-    audio.addEventListener("timeupdate", () => {
+    const handleTimeUpdate = () => {
       setCurrentTime(audio.currentTime);
-    });
+    };
 
-    audio.addEventListener("loadedmetadata", () => {
+    const handleLoadedMetadata = () => {
       setDuration(audio.duration);
-    });
+    };
+
+    const handlePlay = () => {
+      setIsPlaying(true);
+
+      const track = currentTrackRef.current;
+
+      if (!track) return;
+
+      trackEvent("track_play", {
+        ...analyticsParams,
+        track_id: track.id,
+        track_title: track.title,
+        track_number: track.track_number,
+      });
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
+
+      const track = currentTrackRef.current;
+
+      if (!track || audio.ended) return;
+
+      trackEvent("track_pause", {
+        ...analyticsParams,
+        track_id: track.id,
+        track_title: track.title,
+        track_number: track.track_number,
+        position_seconds: Math.floor(audio.currentTime),
+      });
+    };
+
+    const handleEnded = () => {
+      const track = currentTrackRef.current;
+
+      if (!track || lastCompletedRef.current) return;
+
+      lastCompletedRef.current = true;
+
+      trackEvent("track_complete", {
+        ...analyticsParams,
+        track_id: track.id,
+        track_title: track.title,
+        track_number: track.track_number,
+        duration_seconds: Math.floor(audio.duration || 0),
+      });
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("ended", handleEnded);
 
     return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("ended", handleEnded);
+
       audio.pause();
       audio.removeAttribute("src");
       audio.load();
+
       audioRef.current = null;
     };
   }, []);
 
-  const playTrack = useCallback(
-    async (track: Track) => {
-      const audio = audioRef.current;
-      if (!audio) return;
+  const playTrack = useCallback(async (track: Track) => {
+    const audio = audioRef.current;
+    if (!audio) return;
 
-      if (currentTrack?.id !== track.id) {
-        audio.src = `/api/audio/${track.id}`;
-        audio.load();
+    const isNewTrack = currentTrackRef.current?.id !== track.id;
 
-        setCurrentTrack(track);
-        setCurrentTime(0);
+    if (isNewTrack) {
+      const previousTrack = currentTrackRef.current;
+
+      if (previousTrack) {
+        trackEvent("track_skip", {
+          ...analyticsParams,
+          from_track: previousTrack.title,
+          to_track: track.title,
+        });
       }
 
-      try {
-        await audio.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.error("Playback failed:", error);
-        setIsPlaying(false);
-      }
-    },
-    [currentTrack],
-  );
+      currentTrackRef.current = track;
+      lastCompletedRef.current = false;
+
+      audio.src = `/api/audio/${track.id}`;
+      audio.load();
+
+      setCurrentTrack(track);
+      setCurrentTime(0);
+      setDuration(0);
+    }
+
+    try {
+      await audio.play();
+      setIsPlaying(true);
+    } catch (error) {
+      console.error("Playback failed:", error);
+      setIsPlaying(false);
+    }
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -85,6 +170,7 @@ export function AudioProvider({ children, tracks }: { children: ReactNode; track
 
       // Repeat current song
       if (repeatMode === "one") {
+        lastCompletedRef.current = false;
         audio.currentTime = 0;
         void audio.play();
         return;

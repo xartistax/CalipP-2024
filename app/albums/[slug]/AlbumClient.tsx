@@ -12,6 +12,7 @@ import AlbumBooklet from "../../components/album/AlbumBooklet";
 import MediaSession from "../../components/album/MediaSession";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
+import { trackEvent } from "../../../lib/analytics";
 
 export default function AlbumPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -53,6 +54,15 @@ export default function AlbumPage() {
     loadTracks();
 
     return () => controller.abort();
+  }, [slug]);
+
+  useEffect(() => {
+    if (slug !== "i-thoughts-10years") return;
+
+    trackEvent("album_view", {
+      album: "i-thoughts-10years",
+      campaign: "nfc_promo_2026",
+    });
   }, [slug]);
 
   if (slug !== "i-thoughts-10years") {

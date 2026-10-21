@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { trackEvent } from "../../../lib/analytics";
 
 export default function AlbumBooklet() {
   const [flipped, setFlipped] = useState(false);
@@ -57,7 +58,17 @@ export default function AlbumBooklet() {
       >
         <motion.button
           type="button"
-          onClick={() => setFlipped(!flipped)}
+          onClick={() => {
+            if (!flipped) {
+              trackEvent("booklet_open", {
+                album: "i-thoughts-10years",
+
+                campaign: "nfc_promo_2026",
+              });
+            }
+
+            setFlipped(!flipped);
+          }}
           animate={{ rotateY: flipped ? 180 : 0 }}
           transition={{
             duration: 0.8,
