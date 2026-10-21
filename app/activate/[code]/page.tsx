@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "../../../lib/auth-client";
+import { trackEvent } from "../../../lib/analytics";
 
 type ActivationResponse = {
   success?: boolean;
@@ -24,10 +25,24 @@ export default function ActivatePage() {
   const [status, setStatus] = useState<ActivationStatus>("idle");
   const [error, setError] = useState("");
 
+  const analyticsParams = {
+    album: "i-thoughts-10years",
+    campaign: "nfc_promo_2026",
+  };
+
+  // Track NFC landing page
+  useEffect(() => {
+    if (!code) return;
+
+    trackEvent("nfc_landing", analyticsParams);
+  }, [code]);
+
   async function handleActivation() {
     if (!session || !code || status !== "idle") {
       return;
     }
+
+    trackEvent("nfc_activation_click", analyticsParams);
 
     setStatus("activating");
     setError("");
@@ -50,16 +65,24 @@ export default function ActivatePage() {
       // User already owns the album.
       // The new NFC code has NOT been consumed.
       if (data.alreadyOwned) {
+        trackEvent("nfc_already_owned", analyticsParams);
+
         setStatus("already-owned");
         return;
       }
 
-      // Successful activation.
+      // Successful activation
+      if (!data.alreadyActivated) {
+        trackEvent("nfc_activation_success", analyticsParams);
+      }
+
       setStatus("success");
 
       router.replace(`/albums/${data.slug}`);
       router.refresh();
     } catch (err) {
+      trackEvent("nfc_activation_error", analyticsParams);
+
       setError(err instanceof Error ? err.message : "Activation failed.");
 
       setStatus("error");
@@ -86,11 +109,19 @@ export default function ActivatePage() {
 
           <p style={descriptionStyle}>Sign in or create an account to activate your exclusive NFC album card.</p>
 
-          <Link href={`/login?callbackURL=${encodeURIComponent(redirectTo)}`} style={buttonStyle}>
+          <Link
+            href={`/login?callbackURL=${encodeURIComponent(redirectTo)}`}
+            style={buttonStyle}
+            onClick={() => trackEvent("nfc_login_click", analyticsParams)}
+          >
             SIGN IN
           </Link>
 
-          <Link href={`/register?callbackURL=${encodeURIComponent(redirectTo)}`} style={secondaryButtonStyle}>
+          <Link
+            href={`/register?callbackURL=${encodeURIComponent(redirectTo)}`}
+            style={secondaryButtonStyle}
+            onClick={() => trackEvent("nfc_register_click", analyticsParams)}
+          >
             CREATE ACCOUNT
           </Link>
         </div>
