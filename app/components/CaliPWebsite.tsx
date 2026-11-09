@@ -7,6 +7,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { Hero } from "./Hero";
 import { Navigation } from "./Navigation";
 import { StatementSection } from "./StatementSection";
+import { IThoughtsPromo } from "./IThoughtsPromo";
 
 export const SHOP_URL = "https://senmbelek-store.myshopify.com/";
 
@@ -232,6 +233,10 @@ export default function CaliPWebsite() {
 
         <LazySection id="music" minHeight={{ base: "900px", md: "800px" }}>
           <MusicSection />
+        </LazySection>
+
+        <LazySection id="promo" minHeight={{ base: "700px", md: "500px" }}>
+          <IThoughtsPromo />
         </LazySection>
 
         <LazySection id="tour" minHeight={{ base: "700px", md: "500px" }}>
