@@ -20,7 +20,7 @@ export function StatementSection() {
         w="500px"
         h="500px"
         borderRadius="full"
-        bg="rgba(217, 255, 67, 0.05)"
+        bg="var(--color-theme-glow)"
         filter="blur(100px)"
         pointerEvents="none"
       />
