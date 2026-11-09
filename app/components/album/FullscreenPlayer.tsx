@@ -493,7 +493,7 @@ export default function FullscreenPlayer({
               background: ${COLORS.green};
               color: ${COLORS.background};
               cursor: pointer;
-              box-shadow: 0 0 35px rgba(182, 255, 0, 0.2);
+              box-shadow: 0 0 35px var(--color-theme-glow);
               -webkit-tap-highlight-color: transparent;
               touch-action: manipulation;
             }

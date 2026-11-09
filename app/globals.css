@@ -1,6 +1,8 @@
 :root {
   --color-theme: #eec766;
-  --§color-theme-hover: color-mix(in srgb, var(--color-theme) 90%, white 10%);
+  --color-theme-hover: color-mix(in srgb, var(--color-theme) 90%, white 10%);
+  --color-theme-glow: rgb(238 199 102 / 18%);
+  --color-theme-border: rgb(238 199 102 / 35%);
 }
 
 html {

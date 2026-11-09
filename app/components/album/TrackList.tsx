@@ -98,10 +98,10 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
                 marginBottom: "6px",
                 borderRadius: "12px",
                 border: active
-                  ? "1px solid rgba(182,255,0,0.3)"
+                  ? "1px solid var(--color-theme-border)"
                   : "1px solid transparent",
                 background: active
-                  ? "rgba(182,255,0,0.07)"
+                  ? "var(--color-theme-glow)"
                   : "rgba(255,255,255,0.025)",
                 color: "#fff",
                 cursor: "pointer",
