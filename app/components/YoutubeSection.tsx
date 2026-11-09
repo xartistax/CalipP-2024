@@ -376,7 +376,7 @@ function FeaturedVideoCard({
             transition="all 0.3s ease"
             _groupHover={{
               transform: "scale(1.12)",
-              bg: "color-mix(in srgb, var(--color-theme) 90%, white 10%);",
+              bg: "var(--color-theme-hover)",
             }}
           >
             <FaPlay size={22} />
@@ -514,7 +514,7 @@ function SmallVideoCard({
             w="42px"
             h="42px"
             borderRadius="full"
-            bg="rgba(217,255,67,0.92)"
+            bg="var(--color-theme)"
             color="#080a08"
             transform="scale(0.92)"
             transition="transform 0.25s ease"

@@ -141,7 +141,7 @@ export function ShopSection() {
                     letterSpacing="0.1em"
                     textTransform="uppercase"
                     _hover={{
-                      bg: "#ecff9b",
+                      bg: "var(--color-theme-hover)",
                       transform: "scale(1.04)",
                       boxShadow: "0 20px 60px rgba(217,255,67,0.18)",
                     }}
