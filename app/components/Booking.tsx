@@ -1,5 +1,16 @@
 "use client";
-import { Box, Container, Divider, Heading, Icon, Link, SimpleGrid, Stack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Divider,
+  Heading,
+  Icon,
+  Link,
+  SimpleGrid,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { FaEnvelope, FaPhone } from "react-icons/fa";
 import { Reveal } from "./Reveal";
@@ -8,7 +19,14 @@ import { trackEvent } from "../../lib/analytics";
 
 export function BookingSection() {
   return (
-    <Box id="booking" position="relative" py={{ base: 20, md: 28 }} bg="#0d100d" scrollMarginTop="90px" overflow="hidden">
+    <Box
+      id="booking"
+      position="relative"
+      py={{ base: 20, md: 28 }}
+      bg="#0d100d"
+      scrollMarginTop="90px"
+      overflow="hidden"
+    >
       <Box
         position="absolute"
         left="-180px"
@@ -37,8 +55,14 @@ export function BookingSection() {
               Bring Cali P to your stage.
             </Heading>
 
-            <Text maxW="650px" color="whiteAlpha.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.8}>
-              For bookings, collaborations and management enquiries, contact the respective team.
+            <Text
+              maxW="650px"
+              color="whiteAlpha.600"
+              fontSize={{ base: "md", md: "lg" }}
+              lineHeight={1.8}
+            >
+              For bookings, collaborations and management enquiries, contact the
+              respective team.
             </Text>
           </VStack>
         </Reveal>
@@ -56,7 +80,12 @@ export function BookingSection() {
 
               <Divider borderColor="whiteAlpha.200" />
 
-              <ContactPerson name="Andreas Ryser" email="andreas@mouthwateringrecords.com" company="Mouthwatering Records" contactType="management" />
+              <ContactPerson
+                name="Andreas Ryser"
+                email="andreas@mouthwateringrecords.com"
+                company="Mouthwatering Records"
+                contactType="management"
+              />
 
               <Text color="whiteAlpha.400" fontSize="sm">
                 3000 Bern, Switzerland
@@ -66,7 +95,13 @@ export function BookingSection() {
 
           <Reveal delay={0.16} distance={24} h="full">
             <ContactCard label="Booking" company="Nila Agency">
-              <ContactPerson name="Ivo Orlik" phone="+41 79 747 92 78" email="ivo@nila-agency.ch" company="Nila Agency" contactType="booking" />
+              <ContactPerson
+                name="Ivo Orlik"
+                phone="+41 79 747 92 78"
+                email="ivo@nila-agency.ch"
+                company="Nila Agency"
+                contactType="booking"
+              />
 
               <Text color="whiteAlpha.400" fontSize="sm">
                 3700 Chur, Switzerland
@@ -79,7 +114,15 @@ export function BookingSection() {
   );
 }
 
-function ContactCard({ label, company, children }: { label: string; company: string; children: ReactNode }) {
+function ContactCard({
+  label,
+  company,
+  children,
+}: {
+  label: string;
+  company: string;
+  children: ReactNode;
+}) {
   return (
     <Stack
       spacing={8}
@@ -99,11 +142,22 @@ function ContactCard({ label, company, children }: { label: string; company: str
       }}
     >
       <Stack spacing={3}>
-        <Text color="#d9ff43" fontSize="xs" fontWeight={700} letterSpacing="0.2em" textTransform="uppercase">
+        <Text
+          color="var(--color-theme)"
+          fontSize="xs"
+          fontWeight={700}
+          letterSpacing="0.2em"
+          textTransform="uppercase"
+        >
           {label}
         </Text>
 
-        <Heading as={"h2"} fontSize={{ base: "2xl", md: "3xl" }} fontWeight={500} letterSpacing="-0.03em">
+        <Heading
+          as={"h2"}
+          fontSize={{ base: "2xl", md: "3xl" }}
+          fontWeight={500}
+          letterSpacing="-0.03em"
+        >
           {company}
         </Heading>
       </Stack>
@@ -155,7 +209,7 @@ function ContactPerson({
             })
           }
           _hover={{
-            color: "#d9ff43",
+            color: "var(--color-theme)",
             textDecoration: "none",
           }}
         >
@@ -183,7 +237,7 @@ function ContactPerson({
           })
         }
         _hover={{
-          color: "#d9ff43",
+          color: "var(--color-theme)",
           textDecoration: "none",
         }}
       >

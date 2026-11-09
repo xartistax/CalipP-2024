@@ -14,7 +14,14 @@ export default function NotFound() {
     return () => clearTimeout(timer);
   }, []);
   return (
-    <Box minH="100vh" display="flex" alignItems="center" bg="#080a08" overflow="hidden" position="relative">
+    <Box
+      minH="100vh"
+      display="flex"
+      alignItems="center"
+      bg="#080a08"
+      overflow="hidden"
+      position="relative"
+    >
       <Box
         position="absolute"
         top="-220px"
@@ -47,7 +54,13 @@ export default function NotFound() {
 
       <Container maxW="6xl" position="relative" zIndex={2}>
         <Stack spacing={8} align="center" textAlign="center">
-          <Text color="#d9ff43" fontSize="xs" fontWeight={800} letterSpacing="0.22em" textTransform="uppercase">
+          <Text
+            color="var(--color-theme)"
+            fontSize="xs"
+            fontWeight={800}
+            letterSpacing="0.22em"
+            textTransform="uppercase"
+          >
             Error 404
           </Text>
 
@@ -63,7 +76,7 @@ export default function NotFound() {
             letterSpacing="-0.05em"
           >
             This page
-            <Text as="span" display="block" color="#d9ff43">
+            <Text as="span" display="block" color="var(--color-theme)">
               has left the stage.
             </Text>
           </Heading>
@@ -93,13 +106,13 @@ export default function NotFound() {
               h="58px"
               px={8}
               borderRadius="full"
-              bg="#d9ff43"
+              bg="var(--color-theme)"
               color="#080a08"
               fontWeight={900}
               letterSpacing="0.08em"
               textTransform="uppercase"
               _hover={{
-                bg: "#ecff9b",
+                bg: "color-mix(in srgb, var(--color-theme) 90%, white 10%);",
                 transform: "translateY(-2px)",
               }}
             >
@@ -119,14 +132,20 @@ export default function NotFound() {
               letterSpacing="0.08em"
               textTransform="uppercase"
               _hover={{
-                borderColor: "#d9ff43",
-                color: "#d9ff43",
+                borderColor: "var(--color-theme)",
+                color: "var(--color-theme)",
               }}
             >
               Latest Music
             </Button>
           </Stack>
-          <Box mt={8} minH="28px" display="flex" alignItems="center" justifyContent="center">
+          <Box
+            mt={8}
+            minH="28px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
             <Text
               color="whiteAlpha.500"
               fontSize="sm"

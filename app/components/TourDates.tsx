@@ -1,8 +1,23 @@
 "use client";
 
-import { Box, Button, Container, Flex, Heading, HStack, Skeleton, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  HStack,
+  Skeleton,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FaArrowRight, FaCalendarAlt, FaMapMarkerAlt, FaTicketAlt } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaTicketAlt,
+} from "react-icons/fa";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
 import { BandsintownEvent, EventsResponse } from "../../types";
@@ -47,7 +62,14 @@ export function TourDates() {
   }, []);
 
   return (
-    <Box id="tour" position="relative" overflow="hidden" bg="#080a08" py={{ base: 20, md: 28 }} scrollMarginTop="90px">
+    <Box
+      id="tour"
+      position="relative"
+      overflow="hidden"
+      bg="#080a08"
+      py={{ base: 20, md: 28 }}
+      scrollMarginTop="90px"
+    >
       <Box
         position="absolute"
         top="-200px"
@@ -75,30 +97,47 @@ export function TourDates() {
               letterSpacing="-0.045em"
             >
               Upcoming shows.
-              <Text as="span" color="#d9ff43">
+              <Text as="span" color="var(--color-theme)">
                 {" "}
                 See Cali P live.
               </Text>
             </Heading>
 
-            <Text color="whiteAlpha.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.8}>
-              Tour dates and ticket information, updated automatically through Bandsintown.
+            <Text
+              color="whiteAlpha.600"
+              fontSize={{ base: "md", md: "lg" }}
+              lineHeight={1.8}
+            >
+              Tour dates and ticket information, updated automatically through
+              Bandsintown.
             </Text>
           </Stack>
         </Reveal>
 
         {isLoading && <TourSkeleton />}
 
-        {!isLoading && hasError && <EmptyState title="Tour dates could not be loaded" text="Please check again later." />}
+        {!isLoading && hasError && (
+          <EmptyState
+            title="Tour dates could not be loaded"
+            text="Please check again later."
+          />
+        )}
 
         {!isLoading && !hasError && events.length === 0 && (
-          <EmptyState title="No upcoming shows announced" text="New tour dates will appear here automatically." />
+          <EmptyState
+            title="No upcoming shows announced"
+            text="New tour dates will appear here automatically."
+          />
         )}
 
         {!isLoading && !hasError && events.length > 0 && (
           <Stack spacing={4}>
             {events.map((event, index) => (
-              <Reveal key={event.id} delay={Math.min(index * 0.06, 0.3)} distance={18}>
+              <Reveal
+                key={event.id}
+                delay={Math.min(index * 0.06, 0.3)}
+                distance={18}
+              >
                 <EventCard event={event} />
               </Reveal>
             ))}
@@ -114,7 +153,9 @@ function EventCard({ event }: { event: BandsintownEvent }) {
 
   const fullDate = formatEventDate(event);
 
-  const location = [event.venue.city, event.venue.region, event.venue.country].filter(Boolean).join(", ");
+  const location = [event.venue.city, event.venue.region, event.venue.country]
+    .filter(Boolean)
+    .join(", ");
 
   const countryFlag = getCountryFlag(event.venue.country);
 
@@ -132,7 +173,9 @@ function EventCard({ event }: { event: BandsintownEvent }) {
     year: "numeric",
   }).format(eventDate);
 
-  const ticketOffer = event.offers.find((offer) => offer.status === "available" && offer.url);
+  const ticketOffer = event.offers.find(
+    (offer) => offer.status === "available" && offer.url,
+  );
 
   const eventUrl = ticketOffer?.url ?? event.url;
 
@@ -162,7 +205,7 @@ function EventCard({ event }: { event: BandsintownEvent }) {
         w={{ base: "full", md: "110px" }}
         minH={{ base: "90px", md: "110px" }}
         borderRadius="20px"
-        bg="#d9ff43"
+        bg="var(--color-theme)"
         color="#080a08"
       >
         <Text fontSize="4xl" fontWeight={900} lineHeight={1}>
@@ -224,7 +267,7 @@ function EventCard({ event }: { event: BandsintownEvent }) {
         h="52px"
         flexShrink={0}
         borderRadius="full"
-        bg={ticketOffer ? "#d9ff43" : "whiteAlpha.100"}
+        bg={ticketOffer ? "var(--color-theme)" : "whiteAlpha.100"}
         color={ticketOffer ? "#080a08" : "white"}
         px={7}
         fontSize="sm"
@@ -232,7 +275,7 @@ function EventCard({ event }: { event: BandsintownEvent }) {
         textTransform="uppercase"
         letterSpacing="0.08em"
         _hover={{
-          bg: ticketOffer ? "#ecff9b" : "whiteAlpha.200",
+          bg: ticketOffer ? "var(--color-theme-hover)" : "whiteAlpha.200",
           transform: "translateY(-2px)",
         }}
       >
@@ -245,7 +288,13 @@ function TourSkeleton() {
   return (
     <Stack spacing={4}>
       {Array.from({ length: 3 }).map((_, index) => (
-        <Skeleton key={index} h={{ base: "260px", md: "165px" }} borderRadius="30px" startColor="whiteAlpha.100" endColor="whiteAlpha.200" />
+        <Skeleton
+          key={index}
+          h={{ base: "260px", md: "165px" }}
+          borderRadius="30px"
+          startColor="whiteAlpha.100"
+          endColor="whiteAlpha.200"
+        />
       ))}
     </Stack>
   );
@@ -275,11 +324,17 @@ function EmptyState({ title, text }: { title: string; text: string }) {
 function formatEventDate(event: BandsintownEvent): string {
   const locale = "en-GB";
 
-  if (event.datetime_display_rule === "range" && event.festival_start_date && event.festival_end_date) {
+  if (
+    event.datetime_display_rule === "range" &&
+    event.festival_start_date &&
+    event.festival_end_date
+  ) {
     const start = new Date(`${event.festival_start_date}T12:00:00`);
     const end = new Date(`${event.festival_end_date}T12:00:00`);
 
-    const sameMonth = start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear();
+    const sameMonth =
+      start.getMonth() === end.getMonth() &&
+      start.getFullYear() === end.getFullYear();
 
     const sameYear = start.getFullYear() === end.getFullYear();
 

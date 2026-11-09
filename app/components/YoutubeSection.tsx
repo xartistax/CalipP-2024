@@ -21,7 +21,13 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaArrowRight, FaClock, FaEye, FaPlay, FaYoutube } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaClock,
+  FaEye,
+  FaPlay,
+  FaYoutube,
+} from "react-icons/fa";
 import type { YoutubeResponse, YoutubeVideo } from "../../types";
 import { Reveal } from "./Reveal";
 import { SectionLabel } from "./StatementSection";
@@ -32,7 +38,9 @@ const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@calipmusic";
 
 export function YoutubeSection() {
   const [videos, setVideos] = useState<YoutubeVideo[]>([]);
-  const [youtubeStats, setYoutubeStats] = useState<YoutubeResponse["stats"] | null>(null);
+  const [youtubeStats, setYoutubeStats] = useState<
+    YoutubeResponse["stats"] | null
+  >(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -102,7 +110,14 @@ export function YoutubeSection() {
   }
 
   return (
-    <Box id="videos" position="relative" overflow="hidden" bg="#0d100d" py={{ base: 20, md: 28 }} scrollMarginTop="90px">
+    <Box
+      id="videos"
+      position="relative"
+      overflow="hidden"
+      bg="#0d100d"
+      py={{ base: 20, md: 28 }}
+      scrollMarginTop="90px"
+    >
       <Box
         position="absolute"
         top="-220px"
@@ -142,7 +157,7 @@ export function YoutubeSection() {
                   letterSpacing="-0.05em"
                 >
                   Watch the music.
-                  <Text as="span" display="block" color="#d9ff43">
+                  <Text as="span" display="block" color="var(--color-theme)">
                     Feel the energy.
                   </Text>
                 </Heading>
@@ -150,7 +165,12 @@ export function YoutubeSection() {
             </Reveal>
 
             <Reveal delay={0.1} distance={22}>
-              <Stack w="full" maxW={{ lg: "520px" }} justifySelf={{ lg: "end" }} spacing={6}>
+              <Stack
+                w="full"
+                maxW={{ lg: "520px" }}
+                justifySelf={{ lg: "end" }}
+                spacing={6}
+              >
                 {!isLoading && !hasError && youtubeStats && (
                   <SimpleGrid
                     columns={2}
@@ -161,14 +181,26 @@ export function YoutubeSection() {
                     borderRadius="24px"
                     bg="rgba(255,255,255,0.035)"
                   >
-                    <YoutubeStat value={youtubeStats.videoCount} label="Videos" />
+                    <YoutubeStat
+                      value={youtubeStats.videoCount}
+                      label="Videos"
+                    />
 
-                    <YoutubeStat value={youtubeStats.viewCount} label="Total views" />
+                    <YoutubeStat
+                      value={youtubeStats.viewCount}
+                      label="Total views"
+                    />
                   </SimpleGrid>
                 )}
 
-                <Text color="whiteAlpha.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.8} textAlign={{ base: "left", lg: "right" }}>
-                  Music videos, live performances and recent releases from the official Cali P YouTube channel.
+                <Text
+                  color="whiteAlpha.600"
+                  fontSize={{ base: "md", md: "lg" }}
+                  lineHeight={1.8}
+                  textAlign={{ base: "left", lg: "right" }}
+                >
+                  Music videos, live performances and recent releases from the
+                  official Cali P YouTube channel.
                 </Text>
 
                 <Button
@@ -206,9 +238,19 @@ export function YoutubeSection() {
 
           {isLoading && <YoutubeSkeleton />}
 
-          {!isLoading && hasError && <YoutubeFallback title="Videos could not be loaded" text="Visit the official YouTube channel to watch Cali P." />}
+          {!isLoading && hasError && (
+            <YoutubeFallback
+              title="Videos could not be loaded"
+              text="Visit the official YouTube channel to watch Cali P."
+            />
+          )}
 
-          {!isLoading && !hasError && videos.length === 0 && <YoutubeFallback title="No videos available" text="New videos will appear here automatically." />}
+          {!isLoading && !hasError && videos.length === 0 && (
+            <YoutubeFallback
+              title="No videos available"
+              text="New videos will appear here automatically."
+            />
+          )}
 
           {!isLoading && !hasError && featuredVideo && (
             <Grid
@@ -220,13 +262,23 @@ export function YoutubeSection() {
               alignItems="start"
             >
               <Reveal distance={26}>
-                <FeaturedVideoCard video={featuredVideo} onPlay={() => playVideo(featuredVideo, "featured")} />
+                <FeaturedVideoCard
+                  video={featuredVideo}
+                  onPlay={() => playVideo(featuredVideo, "featured")}
+                />
               </Reveal>
 
               <Stack spacing={4}>
                 {additionalVideos.map((video, index) => (
-                  <Reveal key={video.id} delay={0.08 + index * 0.07} distance={20}>
-                    <SmallVideoCard video={video} onPlay={() => playVideo(video, "video_list")} />
+                  <Reveal
+                    key={video.id}
+                    delay={0.08 + index * 0.07}
+                    distance={20}
+                  >
+                    <SmallVideoCard
+                      video={video}
+                      onPlay={() => playVideo(video, "video_list")}
+                    />
                   </Reveal>
                 ))}
               </Stack>
@@ -235,7 +287,11 @@ export function YoutubeSection() {
         </Stack>
       </Container>
 
-      <VideoPlayerModal video={selectedVideo} isOpen={isOpen} onClose={closeVideo} />
+      <VideoPlayerModal
+        video={selectedVideo}
+        isOpen={isOpen}
+        onClose={closeVideo}
+      />
     </Box>
   );
 }
@@ -276,12 +332,17 @@ function FeaturedVideoCard({
         boxShadow: "0 35px 100px rgba(0,0,0,0.4)",
       }}
       _focusVisible={{
-        outline: "2px solid #d9ff43",
+        outline: "2px solid var(--color-theme)",
 
         outlineOffset: "4px",
       }}
     >
-      <Box position="relative" aspectRatio={16 / 9} overflow="hidden" bg="black">
+      <Box
+        position="relative"
+        aspectRatio={16 / 9}
+        overflow="hidden"
+        bg="black"
+      >
         <Image
           src={video.thumbnail}
           alt={video.title}
@@ -295,7 +356,11 @@ function FeaturedVideoCard({
           className="youtube-thumbnail"
         />
 
-        <Box position="absolute" inset={0} bgGradient="linear(to-t, rgba(0,0,0,0.82), transparent 65%)" />
+        <Box
+          position="absolute"
+          inset={0}
+          bgGradient="linear(to-t, rgba(0,0,0,0.82), transparent 65%)"
+        />
 
         <Flex position="absolute" inset={0} align="center" justify="center">
           <Flex
@@ -304,14 +369,14 @@ function FeaturedVideoCard({
             w={{ base: "72px", md: "88px" }}
             h={{ base: "72px", md: "88px" }}
             borderRadius="full"
-            bg="#d9ff43"
+            bg="var(--color-theme)"
             color="#080a08"
             boxShadow="0 20px 55px rgba(0,0,0,0.4)"
             transform="scale(1)"
             transition="all 0.3s ease"
             _groupHover={{
               transform: "scale(1.12)",
-              bg: "#ecff9b",
+              bg: "color-mix(in srgb, var(--color-theme) 90%, white 10%);",
             }}
           >
             <FaPlay size={22} />
@@ -337,16 +402,33 @@ function FeaturedVideoCard({
       </Box>
 
       <Stack spacing={3} p={{ base: 5, md: 6 }}>
-        <HStack color="#ff3157" fontSize="xs" fontWeight={800} letterSpacing="0.16em" textTransform="uppercase">
+        <HStack
+          color="#ff3157"
+          fontSize="xs"
+          fontWeight={800}
+          letterSpacing="0.16em"
+          textTransform="uppercase"
+        >
           <FaYoutube />
           <Text>Featured video</Text>
         </HStack>
 
-        <Heading fontSize={{ base: "xl", md: "2xl" }} fontWeight={600} lineHeight={1.2} letterSpacing="-0.025em" noOfLines={2}>
+        <Heading
+          fontSize={{ base: "xl", md: "2xl" }}
+          fontWeight={600}
+          lineHeight={1.2}
+          letterSpacing="-0.025em"
+          noOfLines={2}
+        >
           {video.title}
         </Heading>
 
-        <Text color="whiteAlpha.600" fontSize="sm" lineHeight={1.7} noOfLines={2}>
+        <Text
+          color="whiteAlpha.600"
+          fontSize="sm"
+          lineHeight={1.7}
+          noOfLines={2}
+        >
           {cleanDescription(video.description)}
         </Text>
 
@@ -363,7 +445,13 @@ function FeaturedVideoCard({
   );
 }
 
-function SmallVideoCard({ video, onPlay }: { video: YoutubeVideo; onPlay: () => void }) {
+function SmallVideoCard({
+  video,
+  onPlay,
+}: {
+  video: YoutubeVideo;
+  onPlay: () => void;
+}) {
   return (
     <Grid
       as="button"
@@ -393,12 +481,18 @@ function SmallVideoCard({ video, onPlay }: { video: YoutubeVideo; onPlay: () => 
         bg: "rgba(255,255,255,0.055)",
       }}
       _focusVisible={{
-        outline: "2px solid #d9ff43",
+        outline: "2px solid var(--color-theme)",
         outlineOffset: "3px",
       }}
       aria-label={`Play ${video.title}`}
     >
-      <Box position="relative" aspectRatio={16 / 9} overflow="hidden" borderRadius="15px" bg="black">
+      <Box
+        position="relative"
+        aspectRatio={16 / 9}
+        overflow="hidden"
+        borderRadius="15px"
+        bg="black"
+      >
         <Image
           src={video.thumbnail}
           alt=""
@@ -432,13 +526,29 @@ function SmallVideoCard({ video, onPlay }: { video: YoutubeVideo; onPlay: () => 
           </Flex>
         </Flex>
 
-        <Text position="absolute" right={2} bottom={2} px={2} py={0.5} borderRadius="md" bg="blackAlpha.800" color="white" fontSize="10px" fontWeight={700}>
+        <Text
+          position="absolute"
+          right={2}
+          bottom={2}
+          px={2}
+          py={0.5}
+          borderRadius="md"
+          bg="blackAlpha.800"
+          color="white"
+          fontSize="10px"
+          fontWeight={700}
+        >
           {formatYoutubeDuration(video.duration)}
         </Text>
       </Box>
 
       <Stack spacing={2} minW={0}>
-        <Heading noOfLines={2} fontSize={{ base: "sm", sm: "md" }} fontWeight={700} lineHeight={1.3}>
+        <Heading
+          noOfLines={2}
+          fontSize={{ base: "sm", sm: "md" }}
+          fontWeight={700}
+          lineHeight={1.3}
+        >
           {video.title}
         </Heading>
 
@@ -455,9 +565,23 @@ function SmallVideoCard({ video, onPlay }: { video: YoutubeVideo; onPlay: () => 
   );
 }
 
-function VideoPlayerModal({ video, isOpen, onClose }: { video: YoutubeVideo | null; isOpen: boolean; onClose: () => void }) {
+function VideoPlayerModal({
+  video,
+  isOpen,
+  onClose,
+}: {
+  video: YoutubeVideo | null;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="6xl" isCentered motionPreset="scale">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      size="6xl"
+      isCentered
+      motionPreset="scale"
+    >
       <ModalOverlay bg="blackAlpha.800" backdropFilter="blur(12px)" />
 
       <ModalContent
@@ -478,7 +602,7 @@ function VideoPlayerModal({ video, isOpen, onClose }: { video: YoutubeVideo | nu
           bg="blackAlpha.700"
           color="white"
           _hover={{
-            bg: "#d9ff43",
+            bg: "var(--color-theme)",
             color: "#080a08",
           }}
         />
@@ -514,11 +638,22 @@ function YoutubeSkeleton() {
       }}
       gap={8}
     >
-      <Skeleton minH={{ base: "420px", md: "620px" }} borderRadius="36px" startColor="whiteAlpha.100" endColor="whiteAlpha.200" />
+      <Skeleton
+        minH={{ base: "420px", md: "620px" }}
+        borderRadius="36px"
+        startColor="whiteAlpha.100"
+        endColor="whiteAlpha.200"
+      />
 
       <Stack spacing={5}>
         {Array.from({ length: 3 }).map((_, index) => (
-          <Skeleton key={index} h="135px" borderRadius="22px" startColor="whiteAlpha.100" endColor="whiteAlpha.200" />
+          <Skeleton
+            key={index}
+            h="135px"
+            borderRadius="22px"
+            startColor="whiteAlpha.100"
+            endColor="whiteAlpha.200"
+          />
         ))}
       </Stack>
     </Grid>
@@ -584,7 +719,9 @@ function formatPublishedDate(date: string): string {
 }
 
 function formatYoutubeDuration(duration: string): string {
-  const match = duration.match(/P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  const match = duration.match(
+    /P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/,
+  );
 
   if (!match) {
     return "0:00";
@@ -608,7 +745,9 @@ function cleanDescription(description: string): string {
     .replace(/\s+/g, " ")
     .trim();
 
-  return cleaned || "Watch the latest Cali P video on the official YouTube channel.";
+  return (
+    cleaned || "Watch the latest Cali P video on the official YouTube channel."
+  );
 }
 
 function YoutubeStat({
@@ -637,13 +776,19 @@ function YoutubeStat({
       <AnimatedCounter
         value={value}
         duration={1500}
-        color="#d9ff43"
+        color="var(--color-theme)"
         fontSize={{ base: "3xl", md: "4xl" }}
         fontWeight={700}
         formatter={(value) => formatViews(String(value))}
       />
 
-      <Text color="whiteAlpha.500" fontSize="xs" fontWeight={700} letterSpacing="0.16em" textTransform="uppercase">
+      <Text
+        color="whiteAlpha.500"
+        fontSize="xs"
+        fontWeight={700}
+        letterSpacing="0.16em"
+        textTransform="uppercase"
+      >
         {label}
       </Text>
     </Stack>

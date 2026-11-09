@@ -1,6 +1,22 @@
-import { Box, Button, Container, HStack, Stack, Text, Heading, Flex, Skeleton } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  HStack,
+  Stack,
+  Text,
+  Heading,
+  Flex,
+  Skeleton,
+} from "@chakra-ui/react";
 import Image from "next/image";
-import { FaSpotify, FaShoppingBag, FaYoutube, FaTiktok, FaPlay } from "react-icons/fa";
+import {
+  FaSpotify,
+  FaShoppingBag,
+  FaYoutube,
+  FaTiktok,
+  FaPlay,
+} from "react-icons/fa";
 import { SHOP_URL, SPOTIFY_URL, TIKTOK_URL, YOUTUBE_URL } from "./CaliPWebsite";
 import { SocialButton } from "./intro/intro";
 import { useState, useEffect } from "react";
@@ -8,7 +24,9 @@ import { SpotifyRelease, SpotifyResponse } from "../../types";
 import { trackEvent } from "../../lib/analytics";
 
 export function Footer() {
-  const [latestRelease, setLatestRelease] = useState<SpotifyRelease | null>(null);
+  const [latestRelease, setLatestRelease] = useState<SpotifyRelease | null>(
+    null,
+  );
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,7 +41,11 @@ export function Footer() {
 
         const data = (await response.json()) as SpotifyResponse;
 
-        const releases = [...data.items].sort((a, b) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime());
+        const releases = [...data.items].sort(
+          (a, b) =>
+            new Date(b.release_date).getTime() -
+            new Date(a.release_date).getTime(),
+        );
 
         setLatestRelease(releases[0] ?? null);
       } catch (error) {
@@ -36,7 +58,15 @@ export function Footer() {
     loadLatestRelease();
   }, []);
   return (
-    <Box position="relative" overflow="hidden" bg="#050505" pt={{ base: 20, md: 28 }} pb={10} borderTop="1px solid" borderColor="whiteAlpha.100">
+    <Box
+      position="relative"
+      overflow="hidden"
+      bg="#050505"
+      pt={{ base: 20, md: 28 }}
+      pb={10}
+      borderTop="1px solid"
+      borderColor="whiteAlpha.100"
+    >
       {/* Glow */}
       <Box
         position="absolute"
@@ -104,7 +134,7 @@ export function Footer() {
             }}
           >
             One Love.
-            <Text as="span" color="#d9ff43">
+            <Text as="span" color="var(--color-theme)">
               {" "}
               One Message.
             </Text>
@@ -119,7 +149,8 @@ export function Footer() {
             }}
             lineHeight={1.8}
           >
-            Reggae music connecting people across cultures through positive vibrations, consciousness and unity.
+            Reggae music connecting people across cultures through positive
+            vibrations, consciousness and unity.
           </Text>
 
           <HStack spacing={4} flexWrap="wrap" justify="center">
@@ -231,8 +262,19 @@ export function Footer() {
             {isLoading ? (
               <Skeleton h="90px" borderRadius="18px" />
             ) : latestRelease ? (
-              <Flex direction={{ base: "column", sm: "row" }} align={{ base: "stretch", sm: "center" }} gap={5}>
-                <Box position="relative" flexShrink={0} w={{ base: "full", sm: "90px" }} aspectRatio={1} overflow="hidden" borderRadius="16px">
+              <Flex
+                direction={{ base: "column", sm: "row" }}
+                align={{ base: "stretch", sm: "center" }}
+                gap={5}
+              >
+                <Box
+                  position="relative"
+                  flexShrink={0}
+                  w={{ base: "full", sm: "90px" }}
+                  aspectRatio={1}
+                  overflow="hidden"
+                  borderRadius="16px"
+                >
                   <Image
                     src={latestRelease.images[0]?.url}
                     alt={`${latestRelease.name} cover`}
@@ -244,12 +286,26 @@ export function Footer() {
                   />
                 </Box>
 
-                <Stack flex={1} spacing={1} textAlign={{ base: "center", sm: "left" }}>
-                  <Text color="#d9ff43" fontSize="xs" fontWeight={800} letterSpacing="0.16em" textTransform="uppercase">
+                <Stack
+                  flex={1}
+                  spacing={1}
+                  textAlign={{ base: "center", sm: "left" }}
+                >
+                  <Text
+                    color="var(--color-theme)"
+                    fontSize="xs"
+                    fontWeight={800}
+                    letterSpacing="0.16em"
+                    textTransform="uppercase"
+                  >
                     Latest release
                   </Text>
 
-                  <Heading as={"h2"} fontSize={{ base: "xl", md: "2xl" }} fontWeight={600}>
+                  <Heading
+                    as={"h2"}
+                    fontSize={{ base: "xl", md: "2xl" }}
+                    fontWeight={600}
+                  >
                     {latestRelease.name}
                   </Heading>
 

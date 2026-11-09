@@ -1,5 +1,14 @@
 "use client";
-import { Box, Button, Container, Flex, Grid, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Grid,
+  Heading,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { FaArrowRight } from "react-icons/fa";
 import { SHOP_URL } from "./CaliPWebsite";
 import { Reveal } from "./Reveal";
@@ -8,8 +17,18 @@ import { trackEvent } from "../../lib/analytics";
 
 export function ShopSection() {
   return (
-    <Box id="shop" position="relative" py={{ base: 20, md: 32 }} overflow="hidden" scrollMarginTop="90px">
-      <Box position="absolute" inset={0} bgGradient="linear(to-br, #10140e, #080a08 65%)" />
+    <Box
+      id="shop"
+      position="relative"
+      py={{ base: 20, md: 32 }}
+      overflow="hidden"
+      scrollMarginTop="90px"
+    >
+      <Box
+        position="absolute"
+        inset={0}
+        bgGradient="linear(to-br, #10140e, #080a08 65%)"
+      />
 
       <Box
         position="absolute"
@@ -77,19 +96,28 @@ export function ShopSection() {
                     letterSpacing="-0.05em"
                   >
                     Wear the culture.
-                    <Text as="span" display="block" color="#d9ff43">
+                    <Text as="span" display="block" color="var(--color-theme)">
                       Support the movement.
                     </Text>
                   </Heading>
 
-                  <Text maxW="600px" color="whiteAlpha.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.8}>
-                    Discover official Cali P products and exclusive merchandise in the online store.
+                  <Text
+                    maxW="600px"
+                    color="whiteAlpha.600"
+                    fontSize={{ base: "md", md: "lg" }}
+                    lineHeight={1.8}
+                  >
+                    Discover official Cali P products and exclusive merchandise
+                    in the online store.
                   </Text>
                 </Stack>
               </Reveal>
 
               <Reveal delay={0.18} distance={20}>
-                <Flex justify={{ base: "flex-start", md: "flex-end" }} align="center">
+                <Flex
+                  justify={{ base: "flex-start", md: "flex-end" }}
+                  align="center"
+                >
                   <Button
                     as="a"
                     href={SHOP_URL}
@@ -105,7 +133,7 @@ export function ShopSection() {
                     w={{ base: "full", sm: "auto" }}
                     h={{ base: "62px", md: "72px" }}
                     borderRadius="full"
-                    bg="#d9ff43"
+                    bg="var(--color-theme)"
                     color="#080a08"
                     px={{ base: 8, md: 11 }}
                     fontSize={{ base: "sm", md: "md" }}

@@ -1,4 +1,12 @@
-import { Box, Container, Grid, Heading, HStack, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Grid,
+  Heading,
+  HStack,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
@@ -49,7 +57,7 @@ export function StatementSection() {
                 letterSpacing="-0.04em"
               >
                 More than entertainment.
-                <Text as="span" color="#d9ff43">
+                <Text as="span" color="var(--color-theme)">
                   {" "}
                   Music can connect, uplift and transform.
                 </Text>
@@ -57,9 +65,15 @@ export function StatementSection() {
             </Reveal>
 
             <Reveal delay={0.16} distance={22}>
-              <Text maxW="720px" color="whiteAlpha.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.9}>
-                Cali P combines modern reggae energy with conscious messages, international influences and a deep connection to culture. Every song is built to
-                move both body and mind.
+              <Text
+                maxW="720px"
+                color="whiteAlpha.600"
+                fontSize={{ base: "md", md: "lg" }}
+                lineHeight={1.9}
+              >
+                Cali P combines modern reggae energy with conscious messages,
+                international influences and a deep connection to culture. Every
+                song is built to move both body and mind.
               </Text>
             </Reveal>
           </Stack>
@@ -71,8 +85,15 @@ export function StatementSection() {
 
 export function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <HStack spacing={3} color="#d9ff43" fontSize="xs" fontWeight={700} letterSpacing="0.22em" textTransform="uppercase">
-      <Box w="30px" h="1px" bg="#d9ff43" />
+    <HStack
+      spacing={3}
+      color="var(--color-theme)"
+      fontSize="xs"
+      fontWeight={700}
+      letterSpacing="0.22em"
+      textTransform="uppercase"
+    >
+      <Box w="30px" h="1px" bg="var(--color-theme)" />
       <Text>{children}</Text>
     </HStack>
   );

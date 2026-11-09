@@ -1,15 +1,29 @@
 "use client";
 
-import { Box, Button, Container, FormControl, FormErrorMessage, Input, Stack, Text, Heading, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  FormErrorMessage,
+  Input,
+  Stack,
+  Text,
+  Heading,
+  Flex,
+} from "@chakra-ui/react";
 import { FormEvent, useState } from "react";
 import { trackEvent } from "../../lib/analytics";
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [message, setMessage] = useState("");
 
-  const isInvalid = email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isInvalid =
+    email.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,12 +64,21 @@ export function NewsletterSection() {
       setEmail("");
     } catch (error) {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "Subscription failed. Please try again.");
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Subscription failed. Please try again.",
+      );
     }
   }
 
   return (
-    <Box as="section" bg="#080a08" px={{ base: 5, md: 8 }} py={{ base: 16, md: 24 }}>
+    <Box
+      as="section"
+      bg="#080a08"
+      px={{ base: 5, md: 8 }}
+      py={{ base: 16, md: 24 }}
+    >
       <Container maxW="7xl">
         <Stack
           position="relative"
@@ -84,20 +107,43 @@ export function NewsletterSection() {
           />
 
           <Stack position="relative" spacing={5} align="center">
-            <Text color="#d9ff43" fontSize="xs" fontWeight={800} letterSpacing="0.18em" textTransform="uppercase">
+            <Text
+              color="var(--color-theme)"
+              fontSize="xs"
+              fontWeight={800}
+              letterSpacing="0.18em"
+              textTransform="uppercase"
+            >
               Newsletter
             </Text>
 
-            <Heading as="h2" maxW="760px" fontSize={{ base: "3xl", md: "5xl" }} fontWeight={500} letterSpacing="-0.04em">
+            <Heading
+              as="h2"
+              maxW="760px"
+              fontSize={{ base: "3xl", md: "5xl" }}
+              fontWeight={500}
+              letterSpacing="-0.04em"
+            >
               Never miss a release.
             </Heading>
 
-            <Text maxW="620px" color="whiteAlpha.600" fontSize={{ base: "md", md: "lg" }} lineHeight={1.8}>
+            <Text
+              maxW="620px"
+              color="whiteAlpha.600"
+              fontSize={{ base: "md", md: "lg" }}
+              lineHeight={1.8}
+            >
               Get updates about new music, tour dates and exclusive releases.
             </Text>
           </Stack>
 
-          <Box as="form" position="relative" w="full" maxW="680px" onSubmit={handleSubmit}>
+          <Box
+            as="form"
+            position="relative"
+            w="full"
+            maxW="680px"
+            onSubmit={handleSubmit}
+          >
             <FormControl isInvalid={status === "error"}>
               <Stack direction={{ base: "column", sm: "row" }} spacing={3}>
                 <Input
@@ -122,8 +168,8 @@ export function NewsletterSection() {
                     color: "whiteAlpha.400",
                   }}
                   _focusVisible={{
-                    borderColor: "#d9ff43",
-                    boxShadow: "0 0 0 1px #d9ff43",
+                    borderColor: "var(--color-theme)",
+                    boxShadow: "0 0 0 1px var(--color-theme)",
                   }}
                 />
 
@@ -133,7 +179,7 @@ export function NewsletterSection() {
                   px={9}
                   flexShrink={0}
                   borderRadius="full"
-                  bg="#d9ff43"
+                  bg="var(--color-theme)"
                   color="#080a08"
                   fontWeight={900}
                   letterSpacing="0.08em"
@@ -159,12 +205,33 @@ export function NewsletterSection() {
                 </Button>
               </Stack>
 
-              {status === "error" && <FormErrorMessage justifyContent="center">{message}</FormErrorMessage>}
+              {status === "error" && (
+                <FormErrorMessage justifyContent="center">
+                  {message}
+                </FormErrorMessage>
+              )}
             </FormControl>
 
             {status === "success" && (
-              <Stack mt={6} spacing={3} align="center" role="status" aria-live="polite" animation="newsletterSuccess 0.5s ease both">
-                <Flex align="center" justify="center" w="54px" h="54px" borderRadius="full" bg="#d9ff43" color="#080a08" fontSize="2xl" fontWeight={900}>
+              <Stack
+                mt={6}
+                spacing={3}
+                align="center"
+                role="status"
+                aria-live="polite"
+                animation="newsletterSuccess 0.5s ease both"
+              >
+                <Flex
+                  align="center"
+                  justify="center"
+                  w="54px"
+                  h="54px"
+                  borderRadius="full"
+                  bg="var(--color-theme)"
+                  color="#080a08"
+                  fontSize="2xl"
+                  fontWeight={900}
+                >
                   ✓
                 </Flex>
 

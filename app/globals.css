@@ -1,3 +1,8 @@
+:root {
+  --color-theme: #eec766;
+  --§color-theme-hover: color-mix(in srgb, var(--color-theme) 90%, white 10%);
+}
+
 html {
   scroll-behavior: smooth;
   background: #080a08;
@@ -14,7 +19,7 @@ body {
 }
 
 ::selection {
-  background: #d9ff43;
+  background: var(--color-theme);
   color: #080a08;
 }
 
@@ -33,7 +38,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d9ff43;
+  background: var(--color-theme);
 }
 
 @keyframes heroZoom {

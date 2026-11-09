@@ -1,6 +1,16 @@
 "use client";
 
-import { Box, Button, Container, Grid, Heading, HStack, Skeleton, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Heading,
+  HStack,
+  Skeleton,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { FaExternalLinkAlt, FaNewspaper } from "react-icons/fa";
 
@@ -68,7 +78,14 @@ export function PressSection() {
   }, []);
 
   return (
-    <Box id="press" position="relative" overflow="hidden" bg="#080a08" py={{ base: 20, md: 28 }} scrollMarginTop="90px">
+    <Box
+      id="press"
+      position="relative"
+      overflow="hidden"
+      bg="#080a08"
+      py={{ base: 20, md: 28 }}
+      scrollMarginTop="90px"
+    >
       <Box
         position="absolute"
         top="-180px"
@@ -108,7 +125,7 @@ export function PressSection() {
                   letterSpacing="-0.05em"
                 >
                   Cali P in the press.
-                  <Text as="span" display="block" color="#d9ff43">
+                  <Text as="span" display="block" color="var(--color-theme)">
                     Interviews, stories and features.
                   </Text>
                 </Heading>
@@ -122,17 +139,26 @@ export function PressSection() {
                 textAlign={{ base: "left", lg: "right" }}
                 justifySelf={{ lg: "end" }}
               >
-                Selected articles, interviews and media coverage featuring Cali P.
+                Selected articles, interviews and media coverage featuring Cali
+                P.
               </Text>
             </Grid>
           </Reveal>
 
           {isLoading && <PressSkeleton />}
 
-          {!isLoading && hasError && <PressFallback title="Press articles could not be loaded" text="Please check again later." />}
+          {!isLoading && hasError && (
+            <PressFallback
+              title="Press articles could not be loaded"
+              text="Please check again later."
+            />
+          )}
 
           {!isLoading && !hasError && articles.length === 0 && (
-            <PressFallback title="No press articles available" text="New articles will appear here automatically." />
+            <PressFallback
+              title="No press articles available"
+              text="New articles will appear here automatically."
+            />
           )}
 
           {!isLoading && !hasError && articles.length > 0 && (
@@ -145,7 +171,11 @@ export function PressSection() {
               gap={6}
             >
               {articles.map((article, index) => (
-                <Reveal key={article.id} delay={Math.min(index * 0.05, 0.3)} distance={20}>
+                <Reveal
+                  key={article.id}
+                  delay={Math.min(index * 0.05, 0.3)}
+                  distance={20}
+                >
                   <PressCard article={article} />
                 </Reveal>
               ))}
@@ -178,7 +208,13 @@ function PressCard({ article }: { article: PressArticle }) {
 
       <Stack flex={1} spacing={5} p={{ base: 6, md: 7 }}>
         <HStack justify="space-between" align="flex-start" gap={4}>
-          <HStack color="#d9ff43" fontSize="xs" fontWeight={800} letterSpacing="0.14em" textTransform="uppercase">
+          <HStack
+            color="var(--color-theme)"
+            fontSize="xs"
+            fontWeight={800}
+            letterSpacing="0.14em"
+            textTransform="uppercase"
+          >
             <FaNewspaper />
             <Text>{article.source}</Text>
           </HStack>
@@ -188,12 +224,24 @@ function PressCard({ article }: { article: PressArticle }) {
           </Text>
         </HStack>
 
-        <Heading as="h3" fontSize={{ base: "xl", md: "2xl" }} fontWeight={600} lineHeight={1.25} letterSpacing="-0.025em" noOfLines={3}>
+        <Heading
+          as="h3"
+          fontSize={{ base: "xl", md: "2xl" }}
+          fontWeight={600}
+          lineHeight={1.25}
+          letterSpacing="-0.025em"
+          noOfLines={3}
+        >
           {article.title}
         </Heading>
 
         {article.description && (
-          <Text color="whiteAlpha.600" fontSize="sm" lineHeight={1.75} noOfLines={4}>
+          <Text
+            color="whiteAlpha.600"
+            fontSize="sm"
+            lineHeight={1.75}
+            noOfLines={4}
+          >
             {article.description}
           </Text>
         )}
@@ -230,8 +278,8 @@ function PressCard({ article }: { article: PressArticle }) {
           letterSpacing="0.1em"
           textTransform="uppercase"
           _hover={{
-            borderColor: "#d9ff43",
-            bg: "#d9ff43",
+            borderColor: "var(--color-theme)",
+            bg: "var(--color-theme)",
             color: "#080a08",
           }}
         >
@@ -253,7 +301,13 @@ function PressSkeleton() {
       gap={6}
     >
       {Array.from({ length: 6 }).map((_, index) => (
-        <Skeleton key={index} h="440px" borderRadius="26px" startColor="whiteAlpha.100" endColor="whiteAlpha.200" />
+        <Skeleton
+          key={index}
+          h="440px"
+          borderRadius="26px"
+          startColor="whiteAlpha.100"
+          endColor="whiteAlpha.200"
+        />
       ))}
     </Grid>
   );

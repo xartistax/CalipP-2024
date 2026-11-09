@@ -10,41 +10,67 @@ import { StatementSection } from "./StatementSection";
 
 export const SHOP_URL = "https://senmbelek-store.myshopify.com/";
 
-export const SPOTIFY_URL = "https://open.spotify.com/intl-de/artist/3ecsQBXTAjmQyO3Nqq0KZV";
+export const SPOTIFY_URL =
+  "https://open.spotify.com/intl-de/artist/3ecsQBXTAjmQyO3Nqq0KZV";
 
-export const YOUTUBE_URL = "https://www.youtube.com/calipmusic?sub_confirmation=1";
+export const YOUTUBE_URL =
+  "https://www.youtube.com/calipmusic?sub_confirmation=1";
 
 export const TIKTOK_URL = "https://www.tiktok.com/@itscalip";
 
-const MusicSection = dynamic(() => import("./Spotify").then((module) => module.MusicSection), {
-  loading: () => <SectionSkeleton height={{ base: "900px", md: "800px" }} />,
-});
+const MusicSection = dynamic(
+  () => import("./Spotify").then((module) => module.MusicSection),
+  {
+    loading: () => <SectionSkeleton height={{ base: "900px", md: "800px" }} />,
+  },
+);
 
-const TourDates = dynamic(() => import("./TourDates").then((module) => module.TourDates), {
-  loading: () => <SectionSkeleton height={{ base: "700px", md: "500px" }} />,
-});
+const TourDates = dynamic(
+  () => import("./TourDates").then((module) => module.TourDates),
+  {
+    loading: () => <SectionSkeleton height={{ base: "700px", md: "500px" }} />,
+  },
+);
 
-const YoutubeSection = dynamic(() => import("./YoutubeSection").then((module) => module.YoutubeSection), {
-  loading: () => <SectionSkeleton height={{ base: "900px", md: "700px" }} />,
-});
+const YoutubeSection = dynamic(
+  () => import("./YoutubeSection").then((module) => module.YoutubeSection),
+  {
+    loading: () => <SectionSkeleton height={{ base: "900px", md: "700px" }} />,
+  },
+);
 
-const ShopSection = dynamic(() => import("./Shop").then((module) => module.ShopSection), {
-  loading: () => <SectionSkeleton height={{ base: "600px", md: "450px" }} />,
-});
+const ShopSection = dynamic(
+  () => import("./Shop").then((module) => module.ShopSection),
+  {
+    loading: () => <SectionSkeleton height={{ base: "600px", md: "450px" }} />,
+  },
+);
 
-const BookingSection = dynamic(() => import("./Booking").then((module) => module.BookingSection), {
-  loading: () => <SectionSkeleton height={{ base: "850px", md: "600px" }} />,
-});
+const BookingSection = dynamic(
+  () => import("./Booking").then((module) => module.BookingSection),
+  {
+    loading: () => <SectionSkeleton height={{ base: "850px", md: "600px" }} />,
+  },
+);
 
-const NewsletterSection = dynamic(() => import("./NewsletterSection").then((module) => module.NewsletterSection), {
-  loading: () => <SectionSkeleton height={{ base: "850px", md: "600px" }} />,
-});
+const NewsletterSection = dynamic(
+  () =>
+    import("./NewsletterSection").then((module) => module.NewsletterSection),
+  {
+    loading: () => <SectionSkeleton height={{ base: "850px", md: "600px" }} />,
+  },
+);
 
-const PressSection = dynamic(() => import("./PressSection").then((module) => module.PressSection), {
-  loading: () => <SectionSkeleton height={{ base: "1000px", md: "850px" }} />,
-});
+const PressSection = dynamic(
+  () => import("./PressSection").then((module) => module.PressSection),
+  {
+    loading: () => <SectionSkeleton height={{ base: "1000px", md: "850px" }} />,
+  },
+);
 
-const Footer = dynamic(() => import("./Footer").then((module) => module.Footer));
+const Footer = dynamic(() =>
+  import("./Footer").then((module) => module.Footer),
+);
 
 type ResponsiveHeight = {
   base: string;
@@ -54,7 +80,14 @@ type ResponsiveHeight = {
 function SectionSkeleton({ height }: { height: ResponsiveHeight }) {
   return (
     <Box px={{ base: 5, md: 8 }} py={{ base: 16, md: 24 }} bg="#0d100d">
-      <Skeleton maxW="7xl" h={height} mx="auto" borderRadius="32px" startColor="whiteAlpha.100" endColor="whiteAlpha.200" />
+      <Skeleton
+        maxW="7xl"
+        h={height}
+        mx="auto"
+        borderRadius="32px"
+        startColor="whiteAlpha.100"
+        endColor="whiteAlpha.200"
+      />
     </Box>
   );
 }
@@ -66,7 +99,12 @@ type LazySectionProps = {
   rootMargin?: string;
 };
 
-function LazySection({ id, children, minHeight, rootMargin = "800px 0px" }: LazySectionProps) {
+function LazySection({
+  id,
+  children,
+  minHeight,
+  rootMargin = "800px 0px",
+}: LazySectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [shouldRender, setShouldRender] = useState(false);
 
@@ -168,7 +206,7 @@ export default function CaliPWebsite() {
         px={4}
         py={3}
         borderRadius="md"
-        bg="#d9ff43"
+        bg="var(--color-theme)"
         color="#080a08"
         fontWeight={800}
         transform="translateY(-150%)"
@@ -183,7 +221,12 @@ export default function CaliPWebsite() {
       <Navigation isScrolled={isScrolled} onNavigate={scrollToSection} />
 
       <Box as="main" id="main-content">
-        <Hero videoRef={videoRef} videoSrc={videoSrc} posterSrc={posterSrc} onNavigate={scrollToSection} />
+        <Hero
+          videoRef={videoRef}
+          videoSrc={videoSrc}
+          posterSrc={posterSrc}
+          onNavigate={scrollToSection}
+        />
 
         <StatementSection />
 

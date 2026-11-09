@@ -47,15 +47,30 @@
 }
 
 .contentOverlay {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.38) 42%, rgba(0, 0, 0, 0.72) 72%, #080a08 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.38) 42%,
+    rgba(0, 0, 0, 0.72) 72%,
+    #080a08 100%
+  );
 }
 
 .bottomOverlay {
-  background: linear-gradient(to top, #080a08 0%, rgba(8, 10, 8, 0.45) 18%, transparent 42%);
+  background: linear-gradient(
+    to top,
+    #080a08 0%,
+    rgba(8, 10, 8, 0.45) 18%,
+    transparent 42%
+  );
 }
 
 .vignette {
-  background: radial-gradient(circle at center, transparent 38%, rgba(0, 0, 0, 0.5) 100%);
+  background: radial-gradient(
+    circle at center,
+    transparent 38%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
 }
 
 .container {
@@ -80,7 +95,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #d9ff43;
+  color: var(--color-theme);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -91,7 +106,7 @@
   width: 20px;
   height: 1px;
   flex-shrink: 0;
-  background: #d9ff43;
+  background: var(--color-theme);
 }
 
 .logo {
@@ -118,7 +133,7 @@
 }
 
 .heading span {
-  color: #d9ff43;
+  color: var(--color-theme);
 }
 
 .description {
@@ -160,13 +175,13 @@
 }
 
 .primaryButton {
-  background: #d9ff43;
+  background: var(--color-theme);
   color: #080a08;
 }
 
 .primaryButton:hover,
 .primaryButton:focus-visible {
-  background: #ecff9b;
+  background: color-mix(in srgb, var(--color-theme) 90%, white 10%);
   transform: translateY(-3px);
 }
 
@@ -213,8 +228,8 @@
 
 .socialLink:hover,
 .socialLink:focus-visible {
-  border-color: #d9ff43;
-  background: #d9ff43;
+  border-color: var(--color-theme);
+  background: var(--color-theme);
   color: #080a08;
   transform: translateY(-4px);
 }
@@ -242,13 +257,13 @@
 
 .exploreButton:hover,
 .exploreButton:focus-visible {
-  color: #d9ff43;
+  color: var(--color-theme);
 }
 
 .actionButton:focus-visible,
 .socialLink:focus-visible,
 .exploreButton:focus-visible {
-  outline: 2px solid #d9ff43;
+  outline: 2px solid var(--color-theme);
   outline-offset: 4px;
 }
 
@@ -310,7 +325,13 @@
   }
 
   .contentOverlay {
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.72) 38%, rgba(0, 0, 0, 0.28) 70%, rgba(0, 0, 0, 0.08) 100%);
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.72) 38%,
+      rgba(0, 0, 0, 0.28) 70%,
+      rgba(0, 0, 0, 0.08) 100%
+    );
   }
 
   .container {
