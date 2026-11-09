@@ -197,7 +197,7 @@ export function NewsletterSection() {
                     });
                   }}
                   _hover={{
-                    bg: "#ecff9b",
+                    bg: "var(--color-theme-hover)",
                     transform: "translateY(-2px)",
                   }}
                 >
