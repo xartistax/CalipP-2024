@@ -44,7 +44,7 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
       >
         <span
           style={{
-            color: "#F5B52E",
+            color: "var(--color-theme)",
             fontSize: "11px",
             letterSpacing: "4px",
           }}
@@ -61,10 +61,12 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
           }}
         >
           TRACKLIST
-          <span style={{ color: "#B6FF00" }}>.</span>
+          <span style={{ color: "var(--color-theme)" }}>.</span>
         </h2>
 
-        <p style={{ color: "#888", fontSize: "14px" }}>{tracks.length} TRACKS · DELUXE EDITION</p>
+        <p style={{ color: "#888", fontSize: "14px" }}>
+          {tracks.length} TRACKS · DELUXE EDITION
+        </p>
       </motion.div>
 
       {/* Tracks */}
@@ -95,8 +97,12 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
                 padding: "12px 16px",
                 marginBottom: "6px",
                 borderRadius: "12px",
-                border: active ? "1px solid rgba(182,255,0,0.3)" : "1px solid transparent",
-                background: active ? "rgba(182,255,0,0.07)" : "rgba(255,255,255,0.025)",
+                border: active
+                  ? "1px solid rgba(182,255,0,0.3)"
+                  : "1px solid transparent",
+                background: active
+                  ? "rgba(182,255,0,0.07)"
+                  : "rgba(255,255,255,0.025)",
                 color: "#fff",
                 cursor: "pointer",
                 textAlign: "left",
@@ -108,7 +114,7 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
                 style={{
                   width: "28px",
                   flexShrink: 0,
-                  color: active ? "#B6FF00" : "#F5B52E",
+                  color: active ? "var(--color-theme)" : "var(--color-theme)",
                   fontSize: "13px",
                   fontWeight: 700,
                   textAlign: "center",
@@ -137,7 +143,7 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
                         }}
                         style={{
                           width: "3px",
-                          background: "#B6FF00",
+                          background: "var(--color-theme)",
                           borderRadius: "2px",
                         }}
                       />
@@ -154,7 +160,7 @@ export default function TrackList({ tracks, onTrackSelect }: TrackListProps) {
                   style={{
                     fontSize: "15px",
                     fontWeight: active ? 700 : 500,
-                    color: active ? "#B6FF00" : "#fff",
+                    color: active ? "var(--color-theme)" : "#fff",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     whiteSpace: "nowrap",

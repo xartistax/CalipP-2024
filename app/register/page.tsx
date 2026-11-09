@@ -12,7 +12,10 @@ function RegisterForm() {
 
   const callbackURL = searchParams.get("callbackURL");
 
-  const redirectTo = callbackURL?.startsWith("/activate/") && !callbackURL.startsWith("//") ? callbackURL : "/account";
+  const redirectTo =
+    callbackURL?.startsWith("/activate/") && !callbackURL.startsWith("//")
+      ? callbackURL
+      : "/account";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -65,13 +68,15 @@ function RegisterForm() {
             style={{
               fontSize: "36px",
               fontWeight: 800,
-              color: "#F5B52E",
+              color: "var(--color-theme)",
             }}
           >
             CALI P
           </h1>
 
-          <p style={{ color: "#999", marginTop: "12px" }}>Create your account to unlock your music.</p>
+          <p style={{ color: "#999", marginTop: "12px" }}>
+            Create your account to unlock your music.
+          </p>
         </div>
 
         <form
@@ -82,7 +87,15 @@ function RegisterForm() {
             gap: "18px",
           }}
         >
-          <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required autoComplete="name" style={inputStyle} />
+          <input
+            type="text"
+            placeholder="Your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            autoComplete="name"
+            style={inputStyle}
+          />
 
           <input
             type="email"
@@ -105,13 +118,15 @@ function RegisterForm() {
             style={inputStyle}
           />
 
-          {error && <p style={{ color: "#ff6b6b", fontSize: "14px" }}>{error}</p>}
+          {error && (
+            <p style={{ color: "#ff6b6b", fontSize: "14px" }}>{error}</p>
+          )}
 
           <button
             type="submit"
             disabled={loading}
             style={{
-              background: "#B6FF00",
+              background: "var(--color-theme)",
               color: "#050505",
               border: "none",
               padding: "16px",
@@ -133,7 +148,7 @@ function RegisterForm() {
           }}
         >
           Already have an account?{" "}
-          <a href="/login" style={{ color: "#F5B52E" }}>
+          <a href="/login" style={{ color: "var(--color-theme)" }}>
             Sign in
           </a>
         </p>

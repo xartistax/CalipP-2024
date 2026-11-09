@@ -6,7 +6,14 @@ import { useState } from "react";
 import FullscreenPlayer from "./FullscreenPlayer";
 
 export default function MiniPlayer() {
-  const { currentTrack, isPlaying, togglePlay, nextTrack, currentTime, duration } = useAudio();
+  const {
+    currentTrack,
+    isPlaying,
+    togglePlay,
+    nextTrack,
+    currentTime,
+    duration,
+  } = useAudio();
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
 
   if (!currentTrack) return null;
@@ -37,7 +44,13 @@ export default function MiniPlayer() {
             margin: "auto",
           }}
         >
-          <Image src="/albums/i-thoughts-10years/front.jpg" alt="Album Cover" width={48} height={48} style={{ borderRadius: "6px" }} />
+          <Image
+            src="/albums/i-thoughts-10years/front.jpg"
+            alt="Album Cover"
+            width={48}
+            height={48}
+            style={{ borderRadius: "6px" }}
+          />
 
           <div
             onClick={() => setIsFullscreenOpen(true)}
@@ -62,14 +75,16 @@ export default function MiniPlayer() {
               {currentTrack.title}
             </div>
 
-            <div style={{ color: "#F5B52E", fontSize: "11px" }}>Cali P</div>
+            <div style={{ color: "var(--color-theme)", fontSize: "11px" }}>
+              Cali P
+            </div>
           </div>
 
           <button
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause" : "Play"}
             style={{
-              background: "#B6FF00",
+              background: "var(--color-theme)",
               color: "#000",
               border: 0,
               borderRadius: "50%",
@@ -110,13 +125,16 @@ export default function MiniPlayer() {
             style={{
               height: "100%",
               width: `${progress}%`,
-              background: "#B6FF00",
+              background: "var(--color-theme)",
               transition: "width 0.2s linear",
             }}
           />
         </div>
       </div>
-      <FullscreenPlayer isOpen={isFullscreenOpen} onClose={() => setIsFullscreenOpen(false)} />
+      <FullscreenPlayer
+        isOpen={isFullscreenOpen}
+        onClose={() => setIsFullscreenOpen(false)}
+      />
     </>
   );
 }

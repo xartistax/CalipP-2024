@@ -75,7 +75,7 @@ export default function AlbumPage() {
         style={{
           minHeight: "100vh",
           background: "#050505",
-          color: "#F5B52E",
+          color: "var(--color-theme)",
           display: "grid",
           placeItems: "center",
         }}
@@ -126,7 +126,7 @@ export default function AlbumPage() {
             alignItems: "center",
             gap: 10,
             padding: "10px 0",
-            color: "#F5B52E",
+            color: "var(--color-theme)",
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: "1.5px",
@@ -146,7 +146,8 @@ export default function AlbumPage() {
             transform: "translateX(-50%)",
             width: "350px",
             height: "350px",
-            background: "radial-gradient(circle, rgba(245,181,46,0.22), transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(245,181,46,0.22), transparent 70%)",
             filter: "blur(50px)",
             pointerEvents: "none",
           }}
@@ -171,7 +172,7 @@ export default function AlbumPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             style={{
-              color: "#F5B52E",
+              color: "var(--color-theme)",
               fontSize: "11px",
               letterSpacing: "4px",
               marginBottom: "30px",
@@ -209,7 +210,12 @@ export default function AlbumPage() {
           </motion.div>
 
           {/* Artist */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }} style={{ marginTop: "40px" }}>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            style={{ marginTop: "40px" }}
+          >
             <h1
               style={{
                 fontSize: "clamp(32px, 8vw, 56px)",
@@ -223,7 +229,7 @@ export default function AlbumPage() {
 
             <p
               style={{
-                color: "#F5B52E",
+                color: "var(--color-theme)",
                 fontSize: "14px",
                 letterSpacing: "5px",
                 marginTop: "10px",
@@ -240,13 +246,17 @@ export default function AlbumPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
             whileTap={{ scale: 0.96 }}
-            onClick={() => document.getElementById("tracklist")?.scrollIntoView({ behavior: "smooth" })}
+            onClick={() =>
+              document
+                .getElementById("tracklist")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
             style={{
               marginTop: "45px",
               padding: "16px 36px",
               borderRadius: "100px",
               border: "none",
-              background: "#B6FF00",
+              background: "var(--color-theme)",
               color: "#050505",
               fontWeight: 800,
               fontSize: "13px",

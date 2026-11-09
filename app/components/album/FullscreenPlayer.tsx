@@ -3,7 +3,16 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { IoChevronDown, IoPlaySkipBack, IoPlaySkipForward, IoPlay, IoPause, IoShuffle, IoRepeat, IoArrowForwardOutline } from "react-icons/io5";
+import {
+  IoChevronDown,
+  IoPlaySkipBack,
+  IoPlaySkipForward,
+  IoPlay,
+  IoPause,
+  IoShuffle,
+  IoRepeat,
+  IoArrowForwardOutline,
+} from "react-icons/io5";
 
 import { useAudio } from "./AudioProvider";
 import PlayerBackground from "./PlayerBackground";
@@ -28,8 +37,8 @@ function formatTime(seconds: number): string {
 const COLORS = {
   background: "#050505",
   white: "#FFFFFF",
-  gold: "#F5B52E",
-  green: "#B6FF00",
+  gold: "var(--color-theme)",
+  green: "var(--color-theme)",
   muted: "#777777",
   secondary: "#999999",
 };
@@ -52,9 +61,24 @@ const controlButtonStyle: React.CSSProperties = {
   flexShrink: 0,
 };
 
-export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerProps) {
-  const { currentTrack, isPlaying, togglePlay, nextTrack, previousTrack, currentTime, duration, seek, shuffle, repeatMode, toggleShuffle, cycleRepeatMode } =
-    useAudio();
+export default function FullscreenPlayer({
+  isOpen,
+  onClose,
+}: FullscreenPlayerProps) {
+  const {
+    currentTrack,
+    isPlaying,
+    togglePlay,
+    nextTrack,
+    previousTrack,
+    currentTime,
+    duration,
+    seek,
+    shuffle,
+    repeatMode,
+    toggleShuffle,
+    cycleRepeatMode,
+  } = useAudio();
 
   // Prevent background scrolling while the player is open.
   useEffect(() => {
@@ -131,14 +155,21 @@ export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerPr
           <div className="fullscreen-player-layout">
             {/* Header */}
             <header className="fullscreen-player-header">
-              <button type="button" onClick={onClose} aria-label="Close player" style={controlButtonStyle}>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close player"
+                style={controlButtonStyle}
+              >
                 <IoChevronDown size={28} />
               </button>
 
               <div className="fullscreen-player-heading">
                 <span className="fullscreen-player-label">NOW PLAYING</span>
 
-                <span className="fullscreen-player-album">iTHOUGHTS DELUXE</span>
+                <span className="fullscreen-player-album">
+                  iTHOUGHTS DELUXE
+                </span>
               </div>
 
               <div style={{ width: 44, flexShrink: 0 }} />
@@ -190,7 +221,9 @@ export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerPr
             <div className="fullscreen-player-bottom">
               {/* Track information */}
               <div className="fullscreen-player-track-info">
-                <h2 className="fullscreen-player-track-title">{currentTrack.title}</h2>
+                <h2 className="fullscreen-player-track-title">
+                  {currentTrack.title}
+                </h2>
 
                 <p className="fullscreen-player-artist">Cali P</p>
               </div>
@@ -239,17 +272,32 @@ export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerPr
                 </button>
 
                 {/* Previous */}
-                <button type="button" onClick={previousTrack} aria-label="Previous track" style={controlButtonStyle}>
+                <button
+                  type="button"
+                  onClick={previousTrack}
+                  aria-label="Previous track"
+                  style={controlButtonStyle}
+                >
                   <IoPlaySkipBack size={28} />
                 </button>
 
                 {/* Play / Pause */}
-                <button type="button" onClick={togglePlay} aria-label={isPlaying ? "Pause" : "Play"} className="fullscreen-player-play-button">
+                <button
+                  type="button"
+                  onClick={togglePlay}
+                  aria-label={isPlaying ? "Pause" : "Play"}
+                  className="fullscreen-player-play-button"
+                >
                   {isPlaying ? <IoPause size={34} /> : <IoPlay size={34} />}
                 </button>
 
                 {/* Next */}
-                <button type="button" onClick={nextTrack} aria-label="Next track" style={controlButtonStyle}>
+                <button
+                  type="button"
+                  onClick={nextTrack}
+                  aria-label="Next track"
+                  style={controlButtonStyle}
+                >
                   <IoPlaySkipForward size={28} />
                 </button>
 
@@ -266,7 +314,9 @@ export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerPr
                 >
                   <IoRepeat size={23} />
 
-                  {repeatMode === "one" && <span className="fullscreen-player-repeat-one">1</span>}
+                  {repeatMode === "one" && (
+                    <span className="fullscreen-player-repeat-one">1</span>
+                  )}
                 </button>
               </div>
 
@@ -275,7 +325,11 @@ export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerPr
               <footer className="fullscreen-player-footer">
                 <span>CALI P · EXCLUSIVE DELUXE EXPERIENCE</span>
 
-                <Link href="/" className="fullscreen-player-website" aria-label="Visit Cali P official website">
+                <Link
+                  href="/"
+                  className="fullscreen-player-website"
+                  aria-label="Visit Cali P official website"
+                >
                   calipmusic.com
                   <IoArrowForwardOutline size={13} />
                 </Link>
@@ -310,7 +364,7 @@ export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerPr
             }
 
             .fullscreen-player-website:hover {
-              color: #f5b52e;
+              color: var(--color-theme);
             }
 
             .fullscreen-player-layout {
@@ -322,7 +376,8 @@ export default function FullscreenPlayer({ isOpen, onClose }: FullscreenPlayerPr
               max-width: 520px;
               min-height: 100dvh;
               margin: 0 auto;
-              padding: max(16px, env(safe-area-inset-top)) 24px max(20px, env(safe-area-inset-bottom));
+              padding: max(16px, env(safe-area-inset-top)) 24px
+                max(20px, env(safe-area-inset-bottom));
               gap: 20px;
               box-sizing: border-box;
             }

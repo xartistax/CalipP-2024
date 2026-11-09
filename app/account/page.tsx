@@ -53,14 +53,20 @@ export default async function AccountPage() {
             marginBottom: "60px",
           }}
         >
-          <h1 style={{ color: "#F5B52E", fontSize: "28px" }}>CALI P</h1>
+          <h1 style={{ color: "var(--color-theme)", fontSize: "28px" }}>
+            CALI P
+          </h1>
 
           <LogoutButton />
         </header>
 
-        <h2 style={{ fontSize: "32px", marginBottom: "12px" }}>Welcome, {session.user.name}</h2>
+        <h2 style={{ fontSize: "32px", marginBottom: "12px" }}>
+          Welcome, {session.user.name}
+        </h2>
 
-        <p style={{ color: "#999", marginBottom: "50px" }}>Your music collection</p>
+        <p style={{ color: "#999", marginBottom: "50px" }}>
+          Your music collection
+        </p>
 
         {albums.length === 0 ? (
           <div
@@ -71,9 +77,13 @@ export default async function AccountPage() {
               textAlign: "center",
             }}
           >
-            <h3 style={{ fontSize: "22px", marginBottom: "12px" }}>No albums unlocked yet</h3>
+            <h3 style={{ fontSize: "22px", marginBottom: "12px" }}>
+              No albums unlocked yet
+            </h3>
 
-            <p style={{ color: "#999" }}>Scan your Cali P NFC card to unlock your album.</p>
+            <p style={{ color: "#999" }}>
+              Scan your Cali P NFC card to unlock your album.
+            </p>
           </div>
         ) : (
           <div

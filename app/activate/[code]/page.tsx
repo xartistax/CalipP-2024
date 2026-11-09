@@ -14,7 +14,12 @@ type ActivationResponse = {
   error?: string;
 };
 
-type ActivationStatus = "idle" | "activating" | "success" | "already-owned" | "error";
+type ActivationStatus =
+  | "idle"
+  | "activating"
+  | "success"
+  | "already-owned"
+  | "error";
 
 export default function ActivatePage() {
   const router = useRouter();
@@ -107,7 +112,10 @@ export default function ActivatePage() {
 
           <h2>Unlock your album</h2>
 
-          <p style={descriptionStyle}>Sign in or create an account to activate your exclusive NFC album card.</p>
+          <p style={descriptionStyle}>
+            Sign in or create an account to activate your exclusive NFC album
+            card.
+          </p>
 
           <Link
             href={`/login?callbackURL=${encodeURIComponent(redirectTo)}`}
@@ -140,11 +148,18 @@ export default function ActivatePage() {
 
             <h2 style={titleStyle}>iThoughts</h2>
 
-            <p style={descriptionStyle}>Activate your NFC album card to unlock your exclusive Cali P music experience.</p>
+            <p style={descriptionStyle}>
+              Activate your NFC album card to unlock your exclusive Cali P music
+              experience.
+            </p>
 
             <p style={accountStyle}>Signed in as {session.user.email}</p>
 
-            <button type="button" onClick={handleActivation} style={buttonStyle}>
+            <button
+              type="button"
+              onClick={handleActivation}
+              style={buttonStyle}
+            >
               ACTIVATE ALBUM
             </button>
 
@@ -158,7 +173,9 @@ export default function ActivatePage() {
           <>
             <h2 style={titleStyle}>Activating...</h2>
 
-            <p style={descriptionStyle}>Please wait while we unlock your music.</p>
+            <p style={descriptionStyle}>
+              Please wait while we unlock your music.
+            </p>
           </>
         )}
 
@@ -176,7 +193,10 @@ export default function ActivatePage() {
 
             <h2 style={titleStyle}>You already own this album</h2>
 
-            <p style={descriptionStyle}>iThoughts is already part of your collection. This NFC activation code has not been used.</p>
+            <p style={descriptionStyle}>
+              iThoughts is already part of your collection. This NFC activation
+              code has not been used.
+            </p>
 
             <Link href="/albums/i-thoughts-10years" style={buttonStyle}>
               GO TO MY ALBUM
@@ -239,14 +259,14 @@ const cardStyle: React.CSSProperties = {
 };
 
 const headingStyle: React.CSSProperties = {
-  color: "#F5B52E",
+  color: "var(--color-theme)",
   fontSize: "38px",
   fontWeight: 800,
   marginBottom: "36px",
 };
 
 const eyebrowStyle: React.CSSProperties = {
-  color: "#F5B52E",
+  color: "var(--color-theme)",
   fontSize: "11px",
   letterSpacing: "3px",
   marginBottom: "14px",
@@ -274,7 +294,7 @@ const buttonStyle: React.CSSProperties = {
   display: "block",
   width: "100%",
   padding: "16px",
-  background: "#B6FF00",
+  background: "var(--color-theme)",
   color: "#050505",
   border: "none",
   borderRadius: "10px",
@@ -289,6 +309,6 @@ const buttonStyle: React.CSSProperties = {
 const secondaryButtonStyle: React.CSSProperties = {
   ...buttonStyle,
   background: "transparent",
-  color: "#F5B52E",
-  border: "1px solid #F5B52E",
+  color: "var(--color-theme)",
+  border: "1px solid var(--color-theme)",
 };

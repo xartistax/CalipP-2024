@@ -18,7 +18,7 @@ export default function AlbumBooklet() {
     >
       <span
         style={{
-          color: "#F5B52E",
+          color: "var(--color-theme)",
           fontSize: 11,
           letterSpacing: 4,
         }}
@@ -34,7 +34,7 @@ export default function AlbumBooklet() {
           fontWeight: 800,
         }}
       >
-        THE BOOKLET<span style={{ color: "#B6FF00" }}>.</span>
+        THE BOOKLET<span style={{ color: "var(--color-theme)" }}>.</span>
       </h2>
 
       <p
@@ -134,7 +134,7 @@ export default function AlbumBooklet() {
       <p
         style={{
           marginTop: 30,
-          color: "#B6FF00",
+          color: "var(--color-theme)",
           fontSize: 11,
           letterSpacing: 3,
         }}

@@ -12,7 +12,10 @@ function LoginForm() {
 
   const callbackURL = searchParams.get("callbackURL");
 
-  const redirectTo = callbackURL?.startsWith("/activate/") && !callbackURL.startsWith("//") ? callbackURL : "/account";
+  const redirectTo =
+    callbackURL?.startsWith("/activate/") && !callbackURL.startsWith("//")
+      ? callbackURL
+      : "/account";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,7 +65,7 @@ function LoginForm() {
           style={{
             fontSize: "36px",
             fontWeight: 800,
-            color: "#F5B52E",
+            color: "var(--color-theme)",
             textAlign: "center",
           }}
         >
@@ -107,13 +110,15 @@ function LoginForm() {
             style={inputStyle}
           />
 
-          {error && <p style={{ color: "#ff6b6b", fontSize: "14px" }}>{error}</p>}
+          {error && (
+            <p style={{ color: "#ff6b6b", fontSize: "14px" }}>{error}</p>
+          )}
 
           <button
             type="submit"
             disabled={loading}
             style={{
-              background: "#B6FF00",
+              background: "var(--color-theme)",
               color: "#050505",
               border: "none",
               padding: "16px",
@@ -135,7 +140,7 @@ function LoginForm() {
           }}
         >
           No account yet?{" "}
-          <Link href="/register" style={{ color: "#F5B52E" }}>
+          <Link href="/register" style={{ color: "var(--color-theme)" }}>
             Create account
           </Link>
         </p>

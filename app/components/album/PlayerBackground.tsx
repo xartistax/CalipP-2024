@@ -38,7 +38,8 @@ export default function PlayerBackground({ isPlaying }: PlayerBackgroundProps) {
           maxWidth: 550,
           aspectRatio: "1",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(245,181,46,0.35) 0%, rgba(245,181,46,0.08) 45%, transparent 75%)",
+          background:
+            "radial-gradient(circle, rgba(245,181,46,0.35) 0%, rgba(245,181,46,0.08) 45%, transparent 75%)",
           filter: "blur(55px)",
         }}
       />
@@ -60,7 +61,7 @@ export default function PlayerBackground({ isPlaying }: PlayerBackgroundProps) {
           maxWidth: 450,
           aspectRatio: "1",
           borderRadius: "50%",
-          background: "#B6FF00",
+          background: "var(--color-theme)",
           filter: "blur(130px)",
         }}
       />
@@ -89,7 +90,7 @@ export default function PlayerBackground({ isPlaying }: PlayerBackgroundProps) {
               width: index % 3 === 0 ? 3 : 2,
               height: index % 3 === 0 ? 3 : 2,
               borderRadius: "50%",
-              background: "#F5B52E",
+              background: "var(--color-theme)",
               boxShadow: "0 0 12px rgba(245,181,46,0.8)",
             }}
           />
