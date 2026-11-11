@@ -192,7 +192,7 @@ function EventCard({ event }: { event: BandsintownEvent }) {
       backdropFilter="blur(14px)"
       transition="all 0.3s ease"
       _hover={{
-        borderColor: "rgba(217,255,67,0.55)",
+        borderColor: "var(--color-theme-border)",
         transform: "translateY(-4px)",
         boxShadow: "0 24px 70px rgba(0,0,0,0.3)",
       }}

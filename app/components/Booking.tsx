@@ -136,7 +136,7 @@ function ContactCard({
       backdropFilter="blur(14px)"
       transition="all 0.3s ease"
       _hover={{
-        borderColor: "rgba(217,255,67,0.55)",
+        borderColor: "var(--color-theme-border)",
         transform: "translateY(-6px)",
         boxShadow: "0 30px 80px rgba(0,0,0,0.3)",
       }}
